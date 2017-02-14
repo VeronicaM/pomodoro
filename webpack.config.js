@@ -47,13 +47,9 @@ module.exports ={
         {
 	      test:  /\.(jpe?g|png|gif|svg)$/i,
 	      use: [{
-	        loader: 'url-loader',
+	        loader: 'url-loader?img:src',
 	        options: { limit: 10000 } // Convert images < 10k to base64 strings
 	      }]
-	    },
-	    {
-	      test:  /\.html$/,
-	      use: [{loader: 'raw-loader' }]
 	    },
 		{
 			test:/\.js$/,
