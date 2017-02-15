@@ -21,25 +21,75 @@
                                   supported by Chrome and Opera */
 }
 body{
-//	background-image:linear-gradient(to bottom, #007C0C 0,#000C0C 100%);
+  display: flex;
+  align-items:center;
+}
+#timer{
+    width: 100%;
+    height: 20%;
+    max-height: 200px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    button{
+        padding: 10px;
+        box-shadow: 0 0 22px #000 inset;
+        margin-left: 15px;
+        width: 100px;
+        height: 63px;
+        font-size: 30px;
+        background-color: $startBColor;
+        border-radius: 9px;
+        color: $startTColor;
+        &:focus{
+          outline:0;
+        }
+        &:hover{
+          background-color:$startHBColor;
+        }
+    }
 }
 time{
 	font-size:490%;
 	font-family: "Digital-7";
-	position: absolute;
-    top: 35%;
-    left: 10%;
-	span{
+  display: flex;
+  margin-bottom: 10px;
+  display: inline-block;
+   
+	div{
       border-style:solid;
       border-width:0.1px;
-      padding:10px;
+      display: inline-block;
+      width: 69px;
+      height: 92px;
+
+      & span{
+         position:relative;
+         top:10px;
+         left:10px;
+         @extend  .animateElapsedTime;
+      } 
       background-color:$digits-color;
       color:$digit;
       margin-right:2px;	
+
+     @media screen and (min-width: 600px) {
+         width: 80px;
+         height: 133px;
+      }
 	}
-	span:nth-of-type(3n){
+  div:nth-of-type(2) span{
+    display: inline-block;
+   @extend .animateDigit;
+  }
+	div:nth-of-type(3){
         border:none;
         background-color:transparent;
+        position: relative;
+        left: 25px;
+        top: 15px;
+
 	}
 	@media screen and (min-width: 600px) {
 	   left: 28%;
@@ -55,4 +105,46 @@ time{
 	font-weight:bold;
 	font-size:25px;
 	margin:0 auto;
+}
+
+.animateDigit {
+  animation-name: digitAnimation;
+  animation-duration:1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease;
+  animation-fill-mode: none;
+  animation-play-state:paused;
+}
+.animateElapsedTime{
+   animation-name: elapsedTime;
+   animation-duration:1.5s;
+   animation-iteration-count: infinite;
+   animation-timing-function: ease;
+   animation-fill-mode: none;
+   animation-play-state:paused;
+}
+.runAnimation{
+  animation-play-state:running !important;
+}
+.stopAnimation{
+  animation-play-state:paused !important;;
+}
+@keyframes digitAnimation {
+  0% {
+   transform: scale(1);
+  }
+  100% {
+    transform: scale(2);
+  }
+}
+@keyframes elapsedTime{
+  0% {
+   opacity: 1;
+  }
+  1%{
+    opacity: 0;
+  }
+  100% {
+    opacity:  1;
+  }
 }

@@ -1,35 +1,58 @@
 require("../css/app.scss");
-require("../vendor/countdown-plugin/timeTo.css");
-require("../vendor/countdown-plugin/jquery.time-to.min.js");
+require("../favicon.png");
 $(function () 
  { 
- 	let countdown = 25, minute= 60000, seconds=10000;
+ 	let countdown = 25, settings={seconds:59,minutes:countdown}, minutes= settings.minutes, seconds=settings.seconds;
  $(document).ready(function(){
-       $('#demo').timeTo(60000, function(){
-        alert('Countdown finished');
-    });
+      
        setTimeMinutes(countdown);
       
 	   $("#start").on("click",function(e){
- 			   countdown--;
- 			    setTimeMinutes(countdown);
- 			    setTimeSeconds(59);
- 			  //  setInterval(function(){
-		    //   	  minute--;
-			   // },1000);	
+ 			 elapseTime();
 	   });
  });
 	 function setTimeMinutes(timeV){
 	 	const minutes = timeV.toString().length >1 ? timeV.toString().split(""): ("0"+timeV.toString()).split("");
-	 	$("time span:nth-of-type(1)").text(minutes[0]);
-	 	$("time span:nth-of-type(2)").text(minutes[1]);
+	 	$("time div:nth-of-type(1) span").text(minutes[0]);
+	 	$("time div:nth-of-type(2) span").text(minutes[1]);
 	 }
 	 function setTimeSeconds(timeV){
 	 	const seconds = timeV.toString().length >1 ? timeV.toString().split(""): ("0"+timeV.toString()).split("");
-	 	$("time span:nth-of-type(4)").text(seconds[0]);
-	 	$("time span:nth-of-type(5)").text(seconds[1]);
+	 	
+	 	$("time div:nth-of-type(4) span").text(seconds[0]);
+	 	$("time div:nth-of-type(5) span").text(seconds[1]);
 	 }
-	 function countDown(){
-         
+	 function elapseTime(){
+               minutes--;
+			    setTimeMinutes(minutes);
+			    setTimeSeconds(seconds);
+			    const countdownId = setInterval(function(){
+			      //$("time div:nth-of-type(2) span").removeClass("runAnimation");	
+		       	  if(seconds==0){
+		       	  	if(minutes!=0){
+		       	  	   minutes--;
+		       	  	   setTimeMinutes(minutes);
+		       	  	   seconds=settings.seconds;
+		       	  	//  	animateDigit();
+		       	  	}else{
+		       	  		console.log("finished countdown",seconds,minutes);
+		       	  		clearInterval(countdownId);
+		       	  	}
+		       	  }else{
+		       	  		seconds--;
+	       	        	setTimeSeconds(seconds);
+		       	  }
+		       	
+	       	     updateTitlePomodoro();
+	       	  	
+		    },1000);	
+	 }
+	 function animateDigit(){
+	 	 $("time div:nth-of-type(2) span").addClass("runAnimation");
+	 }
+	 function updateTitlePomodoro(){
+	 	 const min = minutes.toString().length > 1 ? minutes:"0"+minutes;
+	 	 const sec = seconds.toString()	.length > 1 ?seconds:"0"+seconds;
+	 	 $("title").text(min+":"+sec+" Pomodoro");
 	 }
 });
