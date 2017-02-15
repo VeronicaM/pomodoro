@@ -1,6 +1,51 @@
-$myC : lightblue;
+@import "colors";
+@font-face {
+  font-family: 'Digital-7';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Digital-7'), url('../fonts/digital-7.ttf') format('truetype');
+}
+.noselection {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
 body{
-	background-image:linear-gradient(to bottom, #007C0C 0,#000C0C 100%);
+//	background-image:linear-gradient(to bottom, #007C0C 0,#000C0C 100%);
+}
+time{
+	font-size:490%;
+	font-family: "Digital-7";
+	position: absolute;
+    top: 35%;
+    left: 10%;
+	span{
+      border-style:solid;
+      border-width:0.1px;
+      padding:10px;
+      background-color:$digits-color;
+      color:$digit;
+      margin-right:2px;	
+	}
+	span:nth-of-type(3n){
+        border:none;
+        background-color:transparent;
+	}
+	@media screen and (min-width: 600px) {
+	   left: 28%;
+   	   top: 41%;
+	   font-size:800%;
+	}
 }
 .mountain{
 	background-image:url('../images/test.jpg');

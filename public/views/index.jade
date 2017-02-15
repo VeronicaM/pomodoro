@@ -3,5 +3,17 @@ html
 		title Pomodoro App
 		link(rel="stylesheet" type="text/css" href="/public/assets/styles.css")
 	body
-		div.mountain Mountain side
+		- var x = 4;
+		time.noselection
+			- for (var i=0; i<x; i++) {
+				if(i%2==0 && i!==0)
+					span=":"
+				span= "0"
+			-}
+			button#start Start
+			button#reset Reset  
+
+		div#demo
 		script(src="/public/assets/bundle.js")
+
+

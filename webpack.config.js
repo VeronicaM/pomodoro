@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports ={
 	context:path.resolve('public'),
-	entry:["./js/utils.js","./js/app.js"],
+	entry:["./js/app.js"],
 	output:{
 		path:path.resolve('build/'),
 		publicPath:'/public/assets/',
@@ -29,10 +29,10 @@ module.exports ={
         {
             test: /\.css$/,
              exclude: /node_modules/,
-             include:path.resolve('public/css'),
+             include:path.resolve('public/vendor'),
 	         use: ExtractTextPlugin.extract({
 	          fallback: "style-loader",
-	          use: "css-loader"
+	          use: "css-loader!autoprefixer-loader"
 	        })
         }, 
         {
@@ -45,9 +45,9 @@ module.exports ={
 	        })
         },
         {
-	      test:  /\.(jpe?g|png|gif|svg)$/i,
+	      test:  /\.(jpe?g|png|gif|svg|ttf)$/i,
 	      use: [{
-	        loader: 'url-loader?img:src',
+	        loader: 'url-loader',
 	        options: { limit: 10000 } // Convert images < 10k to base64 strings
 	      }]
 	    },
