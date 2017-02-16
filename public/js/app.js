@@ -1,5 +1,10 @@
 require("../css/app.scss");
 const favIco =require("../favicon.png");
+const blackCat = require("../images/black-cat.png");
+const appURLDEV = "http://localhost:8000";
+const appURLProduction = "http://localhost:8000";
+const pomodoroEndAudio = require("file-loader!../audio/good-morning.mp3");
+const breakEndAudio = require("file-loader!../audio/attention-seeker.mp3");
 $(function () 
  { 
  	let countdown = 2, 
@@ -7,7 +12,9 @@ $(function ()
  		minutes= settings.minutes, 
  		seconds=settings.seconds,
  		pomodoroId="",
- 		isBreak=false;
+ 		isBreak=false,
+ 		pomodoroEndMsg ="Hey, your pomodoro session of "+settings.minutes+" minutes is over ! Come take a break and cross out your finished tasks !",
+ 		breakEndMsg ="Hey, your break of "+ settings.break+" minutes is over. Do you want to start a new pomodoro ?";
  $(document).ready(function(){
        const link = $("<link></link>");
 	    link[0].type = 'image/x-icon';
@@ -39,6 +46,29 @@ $(function ()
 	   		
 	   });
  });
+	 // request permission on page load
+	window.onload = function () {
+	  if (Notification.permission !== "granted")
+	    Notification.requestPermission();
+	};
+
+	function notifySessionEnd(message,audioN,title) {
+	
+	  if (Notification.permission == "granted"){
+	  	let audio = new Audio(audioN);
+			audio.play();
+		    let notification = new Notification(title, {
+		      icon: blackCat,
+		      body: message,
+		    });
+
+		    notification.onclick = function () {
+		      window.open(appURLDEV);      
+		    };
+	  }
+	  
+
+	}
      function resetPomodoro(){
      	minutes = settings.minutes;
      	seconds = settings.seconds;
@@ -76,10 +106,13 @@ $(function ()
 		       	  		clearInterval(pomodoroId);
 		       	  		
 		       	  		if(!isBreak){
-		       	  		  $("#start").text("Take Break");		
+		       	  		  $("#start").text("Take Break");
+		       	  		  notifySessionEnd(pomodoroEndMsg,pomodoroEndAudio,"Break time");
+		       	  		   
 		       	  		}
 		       	  		else{
 		       	  			resetPomodoro();
+		       	  			notifySessionEnd(breakEndMsg,breakEndAudio,"Break is over");
 		       	  			isBreak= false;	
 		       	  		} 
 		       	  		
