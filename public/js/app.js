@@ -1,10 +1,14 @@
 require("../css/app.scss");
-require("../favicon.png");
+const favIco =require("../favicon.png");
 $(function () 
  { 
  	let countdown = 25, settings={seconds:59,minutes:countdown}, minutes= settings.minutes, seconds=settings.seconds;
  $(document).ready(function(){
-      
+       const link = $("<link></link>");
+	    link[0].type = 'image/x-icon';
+	    link[0].rel = 'shortcut icon';
+	    link[0].href = favIco;
+	    $('head')[0].append(link[0]);
        setTimeMinutes(countdown);
       
 	   $("#start").on("click",function(e){
