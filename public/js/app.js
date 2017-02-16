@@ -53,10 +53,10 @@ $(function ()
 	};
 
 	function notifySessionEnd(message,audioN,title) {
-	
-	  if (Notification.permission == "granted"){
-	  	let audio = new Audio(audioN);
+	    let audio = new Audio(audioN);
 			audio.play();
+	  if (Notification.permission == "granted"){
+	  	
 		    let notification = new Notification(title, {
 		      icon: blackCat,
 		      body: message,
