@@ -1,15 +1,16 @@
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
-var routes = require('./routes/index');
-
-var app = express();
+let express = require('express');
+let path = require('path');
+let  logger = require('morgan');
+let routes = require('./routes/index');
+let bodyParser = require('body-parser')
+let app = express();
 
 app.set('views', path.join(__dirname, 'public/views'));
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
-
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use('/', routes);
 
 // Only load this middleware in dev mode (important).

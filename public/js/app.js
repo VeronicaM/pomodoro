@@ -6,6 +6,7 @@ const blackCat = require("../images/black-cat.png");
 $(function () 
  { 
  	let settings= localStorage.getItem('pomodoroSettings'), 
+ 		location={},
  		minutes= 0,
  		seconds=59,
  		pomodoroId="",
@@ -31,6 +32,9 @@ $(function ()
 	    link[0].href = favIco;
 	    $('head')[0].append(link[0]);
        getQuote();
+       getLocation();
+       getWeather();
+
  	   $("#closeSettings").on("click",function(e){
  	   		$(".menu").hide();
  	   });
@@ -241,13 +245,46 @@ $(function ()
 	  return ret;
 	}
 	function getQuote(){
-		$.getJSON('/quote',
-		 function(response){
-		 	 let quote = JSON.parse(response.substring(2,response.length-1));
+		$.getJSON('/quote',function(quote){
 		 	 quoteLink = quote.quoteLink;
 		 	 let author = quote.quoteAuthor || "Unknown";
 		 	 $(".text").text('" '+quote.quoteText+' "');
 		 	 $(".author").text(author);
 		 });
+	}
+
+	  function getLocation() {
+		// if (navigator.geolocation) {
+		// 	 navigator.geolocation.getCurrentPosition(getCoords,showError);
+		
+		// } else {
+		// 		 $("#weatherInfo").html("<p>Enable location or Search for your city</p>");
+		//   }
+		   $.getJSON("http://ipinfo.io",function(data){
+		   		console.log('location data',data);
+		   		location.lat= data.loc.split(",")[0];
+		   		location.lon= data.loc.split(",")[1];
+		   		location.city= data.city;
+		   		location.country= data.country;
+		   		console.log('location data',location);
+		   });
+	    }
+	function getCoords(result) {
+		 query = "lat="+result.coords.latitude+"&lon="+result.coords.longitude;
+		 getWeather(query);
+	}
+
+	function getWeather(query){
+			$.post("/weather",{"lat":"54","lon":"90","unit":"imperial"}).done(function(wResult){	
+
+			      let data = {
+			      	temp: Math.round(wResult.main.temp),
+			      	description:wResult.weather[0].description,
+			      	imgClass:"http://openweathermap.org/img/w/"+wResult.weather[0].id,
+			      	weatherFor:wResult.name
+			      }
+			     console.log(wResult,data);	    
+			  
+			});
 	}
 });
