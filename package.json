@@ -4,9 +4,10 @@
   "description": "\"# pomodoro\"",
   "main": "server.js",
   "scripts": {
+    "test":"webpack --config webpack.config.production.js -p",
     "start": "node server.js",
     "startC": "webpack-dev-server -d --watch",
-    "build": "webpack --config webpack.config.production.js -p && http-server"
+    "build": "webpack --config webpack.config.production.js -p"
   },
   "repository": {
     "type": "git",
