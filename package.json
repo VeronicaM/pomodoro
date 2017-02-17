@@ -4,8 +4,8 @@
   "description": "\"# pomodoro\"",
   "main": "app.js",
   "scripts": {
-    "startS": "node server.js",
-    "start": "webpack-dev-server -d --watch",
+    "start": "node server.js",
+    "startC": "webpack-dev-server -d --watch",
     "build": "webpack --config webpack.config.production.js -p && http-server"
   },
   "repository": {
