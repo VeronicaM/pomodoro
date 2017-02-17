@@ -5,8 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": " npm run build && node server.js",
-    "startProductionW":"SET NODE_ENV ==\"production\" && npm run build && node server.js",
+    "startProduction": "cross-env NODE_ENV=production npm run build node server.js",
     "startC": "webpack-dev-server -d --watch",
+    "runDev": "cross-env NODE_ENV=development node server.js",
     "build": "webpack --config webpack.config.production.js -p"
   },
   "repository": {
@@ -26,6 +27,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-es2015": "^6.22.0",
     "body-parser": "^1.16.1",
+    "cross-env": "^3.1.4",
     "css-loader": "^0.26.1",
     "express": "^4.14.1",
     "extract-text-webpack-plugin": "^2.0.0-rc.3",

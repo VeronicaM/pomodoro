@@ -6,7 +6,9 @@ let bodyParser = require('body-parser')
 let port = process.env.PORT || 80;
 let favicon = require('serve-favicon');
 let app = express();
-app.use('/public/assets/', express.static(path.join(__dirname, 'build')))
+if(process.env.NODE_ENV !== "development"){
+  app.use('/public/assets/', express.static(path.join(__dirname, 'build')));  
+}
 app.set('views', path.join(__dirname, 'public/views'));
 app.set('view engine', 'jade');
 app.use(favicon(__dirname + '/public/favicon.png'));
@@ -16,7 +18,8 @@ app.use(bodyParser.json());
 app.use('/', routes);
 
 // Only load this middleware in dev mode (important).
-if (app.get('NODE_ENV') === 'development') {
+
+if (process.env.NODE_ENV=== 'development') {
   var webpackMiddleware = require("webpack-dev-middleware");
   var webpack = require('webpack');
 
