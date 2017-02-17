@@ -254,7 +254,7 @@ $(function ()
 	}
 
 	  function getLocation() {
-		   $.get("http://ipinfo.io",function(data){
+		   $.get("https://ipinfo.io",function(data){
 		   	//	console.log('location data',data);
 		   		location.lat= data.loc.split(",")[0];
 		   		location.lon= data.loc.split(",")[1];
