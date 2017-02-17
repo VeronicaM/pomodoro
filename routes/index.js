@@ -6,10 +6,6 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Basic Express App' });
 });
 
-router.get('/favicon.ico', function(req, res, next) {
-  res.render('./favicon.png');
-});
-
 router.get('/quote',function(req,res,next){
 	  	
 		var request = require('request');

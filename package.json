@@ -4,8 +4,7 @@
   "description": "\"# pomodoro\"",
   "main": "server.js",
   "scripts": {
-    "test":"webpack --config webpack.config.production.js -p",
-    "start": "node server.js",
+    "start": "SET NODE_ENV ==\"production\" && npm run build && node server.js",
     "startC": "webpack-dev-server -d --watch",
     "build": "webpack --config webpack.config.production.js -p"
   },
@@ -41,6 +40,7 @@
     "raw-loader": "^0.5.1",
     "request": "^2.79.0",
     "sass-loader": "^5.0.1",
+    "serve-favicon": "^2.3.2",
     "strip-loader": "^0.1.2",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
