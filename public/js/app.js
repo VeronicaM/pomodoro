@@ -261,12 +261,12 @@ $(function ()
 		// 		 $("#weatherInfo").html("<p>Enable location or Search for your city</p>");
 		//   }
 		   $.getJSON("http://ipinfo.io",function(data){
-		   		console.log('location data',data);
+		   	//	console.log('location data',data);
 		   		location.lat= data.loc.split(",")[0];
 		   		location.lon= data.loc.split(",")[1];
 		   		location.city= data.city;
 		   		location.country= data.country;
-		   		console.log('location data',location);
+		   	//	console.log('location data',location);
 		   });
 	    }
 	function getCoords(result) {
@@ -283,7 +283,7 @@ $(function ()
 			      	imgClass:"http://openweathermap.org/img/w/"+wResult.weather[0].id,
 			      	weatherFor:wResult.name
 			      }
-			     console.log(wResult,data);	    
+			   //  console.log(wResult,data);	    
 			  
 			});
 	}
