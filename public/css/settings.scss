@@ -1,5 +1,5 @@
 .settings{
-    font-size: 300%;
+    font-size: 35px;
     color: rgba(0,0,0,0.75);
     position: fixed;
     bottom: 0px;
@@ -8,6 +8,7 @@
      &:hover{
       // animation:rotateCog 0.3s linear 1 alternate;
      }
+    cursor: pointer;
 }
 .partialSetting{
   display: none !important;

@@ -14,6 +14,7 @@ $(function ()
  		breakEndMsg ="",
 		pomodoroEndAudio = "",
         breakEndAudio = "",
+        quoteLink="",
         sounds={
         "Jubilation":"jubilation.mp3",
         "Give me your attention":"attention-seeker.mp3",
@@ -32,6 +33,9 @@ $(function ()
        getQuote();
  	   $("#closeSettings").on("click",function(e){
  	   		$(".menu").hide();
+ 	   });
+ 	    $("#closeQuote").on("click",function(e){
+ 	   		$(".quote").hide();
  	   });
 	   $("#start").on("click",function(e){
 	   	 const toggle = $(this).text();
@@ -60,6 +64,11 @@ $(function ()
 	   		$(".menu").toggle();
 	   	}
 	   });
+	   $(".quoteTrigger").on("click",function(e){
+	   	if(e.target==$(".quoteTrigger")[0]){
+	   		$(".quote").toggle();
+	   	}
+	   });
 	   $(".settings-list div").on("click",function(e){
 	   		$(".settings-list div").removeClass("selected");
 	   		$(this).addClass("selected");
@@ -75,6 +84,20 @@ $(function ()
 	   	    updateStore(newOption);
 	   	    initializeValues();
 		});
+	   $(".quote").hover(function(e){
+	   		  $(".shareQ").addClass("animateQuote");
+	   });
+	   $(".quote").mouseleave(function(e){
+	   	   $(".shareQ").removeClass("animateQuote");
+	   });
+	   $("#twitter").click(function(){
+	 	     let textToTweet = $(".text").text()+" by "+$(".author").text();
+	 	     if(textToTweet.length >=140){
+	 	     	 textToTweet = textToTweet.substring(0,70)+'... by '+$(".author").text()+" "+quoteLink;
+	 	     }
+		 	 var twtLink = 'http://twitter.com/home?status=' +encodeURIComponent(textToTweet);
+		 	 window.open(twtLink,'_blank');
+	 });
  });
  	function loadStore(){
 		let oldSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || {};
@@ -221,8 +244,9 @@ $(function ()
 		$.getJSON('/quote',
 		 function(response){
 		 	 let quote = JSON.parse(response.substring(2,response.length-1));
+		 	 quoteLink = quote.quoteLink;
 		 	 let author = quote.quoteAuthor || "Unknown";
-		 	 $(".text").text(quote.quoteText);
+		 	 $(".text").text('" '+quote.quoteText+' "');
 		 	 $(".author").text(author);
 		 });
 	}
