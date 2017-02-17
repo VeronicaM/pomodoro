@@ -15,8 +15,47 @@ body{
   align-items:center;
   background-image:url('../images/test.jpg');
   background-size: cover;
+  overflow: auto;
+  height: 100%;
 }
-
+.quote{
+    background-color: rgba(0,0,0,0.75);
+    color: rgba(255,255,255,0.7);
+    padding: 10px;
+    margin-right: 26px;
+    font-size: 17px;
+    border-radius: 10px;
+    box-shadow: 0 0 6px black inset;
+    position: fixed;
+    bottom: 4px;
+    right: 0px;
+    margin-left: 80px;
+}
+.author{
+  text-align: center;
+}
+.shareQ{
+    display: flex;
+    justify-content: center;
+}
+#twitter{
+    background-image:url('../images/twitter.svg');
+    height: 20px;
+    width: 24px;
+    display: inline-block;
+    float: right;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-left: 13px;
+}
+.headlineQ{
+    background-color: black;
+    margin-top: -9px;
+    border-radius: 7px 7px 0 0;
+    margin-left: -10px;
+    text-align: center;
+    width: 105%;
+}
 .message{
     width: 70%;
     text-align: left;

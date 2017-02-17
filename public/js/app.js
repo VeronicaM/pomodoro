@@ -29,7 +29,7 @@ $(function ()
 	    link[0].rel = 'shortcut icon';
 	    link[0].href = favIco;
 	    $('head')[0].append(link[0]);
-       
+       getQuote();
  	   $("#closeSettings").on("click",function(e){
  	   		$(".menu").hide();
  	   });
@@ -216,5 +216,14 @@ $(function ()
 	    ret[json[key]] = key;
 	  }
 	  return ret;
+	}
+	function getQuote(){
+		$.getJSON('/quote',
+		 function(response){
+		 	 let quote = JSON.parse(response.substring(2,response.length-1));
+		 	 let author = quote.quoteAuthor || "Unknown";
+		 	 $(".text").text(quote.quoteText);
+		 	 $(".author").text(author);
+		 });
 	}
 });
