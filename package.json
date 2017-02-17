@@ -2,7 +2,7 @@
   "name": "pomodoro",
   "version": "1.0.0",
   "description": "\"# pomodoro\"",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "startC": "webpack-dev-server -d --watch",

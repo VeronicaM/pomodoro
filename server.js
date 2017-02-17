@@ -3,6 +3,8 @@ let path = require('path');
 let  logger = require('morgan');
 let routes = require('./routes/index');
 let bodyParser = require('body-parser')
+let port = process.env.PORT || 80;
+
 let app = express();
 
 app.set('views', path.join(__dirname, 'public/views'));
@@ -39,6 +41,6 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-var server = app.listen(80, function () {
-  console.log('listening on port 80');
+var server = app.listen(port, function () {
+  console.log('listening on port ',port);
 });
