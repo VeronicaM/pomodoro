@@ -1,28 +1,38 @@
 require("../css/app.scss");
 const favIco =require("../favicon.png");
 const blackCat = require("../images/black-cat.png");
-const appURLDEV = "http://localhost:8000";
-const appURLProduction = "http://localhost:8000";
-const pomodoroEndAudio = require("file-loader!../audio/good-morning.mp3");
-const breakEndAudio = require("file-loader!../audio/attention-seeker.mp3");
+
+
 $(function () 
  { 
- 	let countdown = 2, 
- 		settings={seconds:5,minutes:countdown,break:1}, 
- 		minutes= settings.minutes, 
- 		seconds=settings.seconds,
+ 	let settings= localStorage.getItem('pomodoroSettings'), 
+ 		minutes= 0,
+ 		seconds=59,
  		pomodoroId="",
  		isBreak=false,
- 		pomodoroEndMsg ="Hey, your pomodoro session of "+settings.minutes+" minutes is over ! Come take a break and cross out your finished tasks !",
- 		breakEndMsg ="Hey, your break of "+ settings.break+" minutes is over. Do you want to start a new pomodoro ?";
+ 		pomodoroEndMsg ="",
+ 		breakEndMsg ="",
+		pomodoroEndAudio = "",
+        breakEndAudio = "",
+        sounds={
+        "Jubilation":"jubilation.mp3",
+        "Give me your attention":"attention-seeker.mp3",
+        "Good Morning":"good-morning.mp3",
+        "Chime":"long-chime-sound.mp3",
+        "Hey you":"obey.mp3",
+        "Solemn":"solemn.mp3",
+        "Tic Tac":"oringz-w435.mp3"}, soundsNames =swap(sounds);  
+ 
  $(document).ready(function(){
        const link = $("<link></link>");
 	    link[0].type = 'image/x-icon';
 	    link[0].rel = 'shortcut icon';
 	    link[0].href = favIco;
 	    $('head')[0].append(link[0]);
-       setTimeMinutes(countdown);
-      
+       
+ 	   $("#closeSettings").on("click",function(e){
+ 	   		$(".menu").hide();
+ 	   });
 	   $("#start").on("click",function(e){
 	   	 const toggle = $(this).text();
 	   		if(toggle=="Start"){
@@ -45,9 +55,76 @@ $(function ()
 	   		}
 	   		
 	   });
+	   $(".settings").on("click",function(e){
+	   	if(e.target==$(".settings")[0]){
+	   		$(".menu").toggle();
+	   	}
+	   });
+	   $(".settings-list div").on("click",function(e){
+	   		$(".settings-list div").removeClass("selected");
+	   		$(this).addClass("selected");
+	   		setSelectedSettings();
+	   });
+	   $( ".timerSetting" ).change(function(e) {
+	   		let newOption={},key = this.id, value = "";
+	   		if(key.indexOf("S") > 0){
+	   			value = sounds[this.value];
+	   		}
+	   		else{value = this.value;}
+	   		newOption[key]=value;
+	   	    updateStore(newOption);
+	   	    initializeValues();
+		});
  });
+ 	function loadStore(){
+		let oldSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || {};
+		let newSettings = {
+		    'break': oldSettings.break||'5',
+		    'countdown': oldSettings.countdown||'25',
+		    'breakSound': oldSettings.breakSound||'good-morning.mp3',
+		    'workSound':oldSettings.workSound||'attention-seeker.mp3'
+		};
+		settings = newSettings;
+		localStorage.setItem('pomodoroSettings', JSON.stringify(newSettings));
+ 	}
+    function updateStore(option){
+    	let oldSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || {};
+		let newSettings = Object.assign({},oldSettings,option);		
+		settings = newSettings;
+		localStorage.setItem('pomodoroSettings', JSON.stringify(newSettings));
+    }
+ 	function initializeValues(){
+ 		pomodoroEndAudio = require("file-loader!../audio/"+settings.breakSound);
+        breakEndAudio = require("file-loader!../audio/"+settings.workSound);
+        minutes= settings.countdown; 
+        pomodoroEndMsg ="Hey, your pomodoro session of "+settings.countdown+" minutes is over ! Come take a break and cross out your finished tasks !";
+ 		breakEndMsg ="Hey, your break of "+ settings.break+" minutes is over. Do you want to start a new pomodoro ?";
+ 		setTimeMinutes(minutes);
+ 		setStoredTimerSettings();
+ 		setSelectedSettings();
+ 	}
+ 	function setSelectedSettings(){
+ 		$(".partialSetting").attr('style', 'display: none!important');
+ 		let selectedSetting = $("#"+$(".settings-list .selected")[0].id+"O");
+ 		selectedSetting.attr('style', 'display: block!important');
+ 	}
+ 	function setStoredTimerSettings(){
+ 		$("#countdown").val(settings.countdown);
+ 		$("#break").val(settings.break);
+ 		$("#breakSound").val(soundsNames[settings.breakSound]);
+ 		$("#workSound").val(soundsNames[settings.workSound]);
+ 	}
+    $(document).on("mouseup",function (e)
+	{
+	    if ($(".menu").is(":visible") && e.target !== $(".settings")[0] && e.target !== $(".menu")[0] && $(".menu").has(e.target).length === 0) 
+	    {
+	        $(".menu").hide();
+	    }
+	});
 	 // request permission on page load
 	window.onload = function () {
+		loadStore();
+        initializeValues();
 	  if (Notification.permission !== "granted")
 	    Notification.requestPermission();
 	};
@@ -62,16 +139,17 @@ $(function ()
 		      body: message,
 		    });
 
-		    notification.onclick = function () {
-		      window.open(appURLDEV);      
-		    };
+		    notification.addEventListener('click', function(e) {
+			    window.focus();
+			    e.target.close();
+			}, false);
 	  }
 	  
 
 	}
      function resetPomodoro(){
-     	minutes = settings.minutes;
-     	seconds = settings.seconds;
+     	minutes = settings.countdown;	
+     	seconds = 59 	;
      	 $(".message").text("Time until break"); 
      	 $("title").text("Pomodoro");
      	clearInterval(pomodoroId);
@@ -99,7 +177,7 @@ $(function ()
 		       	  	if(minutes!=0){
 		       	  	   minutes--;
 		       	  	   setTimeMinutes(minutes);
-		       	  	   seconds=settings.seconds;
+		       	  	   seconds=59;
 		       	  	//  	animateDigit();
 		       	  	}else{
 		       	  		//console.log("finished countdown",seconds,minutes);
@@ -120,11 +198,8 @@ $(function ()
 		       	  }else{
 		       	  		seconds--;
 	       	        	setTimeSeconds(seconds);
-	       	        	 updateTitlePomodoro();
+	       	        	updateTitlePomodoro();
 		       	  }
-		       	
-	       	    
-	       	  	
 		    },1000);	
 	 }
 	 function animateDigit(){
@@ -135,4 +210,11 @@ $(function ()
 	 	 const sec = seconds.toString()	.length > 1 ?seconds:"0"+seconds;
 	 	 $("title").text(min+":"+sec+" Pomodoro");
 	 }
+	 function swap(json){
+	  var ret = {};
+	  for(var key in json){
+	    ret[json[key]] = key;
+	  }
+	  return ret;
+	}
 });

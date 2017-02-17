@@ -10,7 +10,7 @@ html
 		
      
 	body
-		- var x = 4;
+		- let x = 4;
 		div#timer
 			div.message Time until break
 			time.noselection
@@ -21,6 +21,9 @@ html
 						span= "0"
 				-}
 			button#start Start
+		div.settings ✽
+			div.menu
+				include ./settings
 		script(src="/public/assets/bundle.js")
 
 

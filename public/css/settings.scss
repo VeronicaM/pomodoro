@@ -1,0 +1,117 @@
+.settings{
+    font-size: 300%;
+    color: rgba(0,0,0,0.75);
+    position: fixed;
+    bottom: 0px;
+    height: 60px;
+     @extend  .noselection;
+     &:hover{
+      // animation:rotateCog 0.3s linear 1 alternate;
+     }
+}
+.partialSetting{
+  display: none !important;
+}
+.selected{
+  color:white;
+  font-weight:bold;
+}
+.footer-settings{
+    height: 25px;
+    background-color: white;
+    position: relative;
+    bottom: 62px;
+    border-radius: 0 0 20px 20px;
+    &:before{
+       content:"◂";
+       transform: rotate(-90deg);
+       display: inline-block;
+       font-size: 40px;
+       margin: -13px 0 0 -14px;
+       color: black;
+    }
+}
+.close{
+  float: right;
+  margin-right: 12px;
+  color: $settings-color;
+  cursor: pointer;
+}
+.headline{
+    background-color: black;
+    margin-top: -4px;
+    border-radius: 7px;
+    padding: 5px 0 5px 0;
+}
+.menu {
+      display:none;
+      position: relative;
+      bottom: 370px;
+      font-size: 19px;
+      background-color: rgba(0, 0, 0, 0.85);
+      height: 300px;
+      width: 430px;
+      color: white;
+      text-align: center;
+      padding-top: 6px;
+      border-radius: 8px;
+      box-shadow: 0 0 24px #000 inset;
+      z-index: -1;
+    }
+.settings-content{
+        display: flex;
+        flex-direction: row;
+        margin-top: 23px;
+        font-size: 15px;
+        color:$settings-color;
+}
+.settings-list{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    text-align: left;
+    margin: 0 30px 0 15px;
+    color:$settings-color;    
+    div{
+      padding-bottom:10px;
+      &:after{
+        content: "";
+        display: block;
+        height: 0.9px;
+        width: 100%;
+        background: rgba(255,255,255,0.35);
+      }
+      &:hover{
+        color:white;
+        cursor:pointer;
+      }
+    }    
+}
+.settings-options{
+     margin-left: 20px;
+     & > div{
+         display: flex;
+         flex-direction: column;
+         align-items: flex-start;
+
+         div{
+            display: flex;
+            justify-content: space-between;
+            flex-direction: row;
+            width: 100%;
+            padding-bottom: 10px;
+         }
+         select{
+            width: 52%;
+         }
+     }
+}
+@keyframes rotateCog{
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotateZ(-90deg);
+  }
+}

@@ -55,8 +55,8 @@ module.exports ={
 			test:/\.js$/,
 			exclude:/node_modules/,
 			use:[{
-				loader:'babel-loader'
-			//	options:{presets:['babel-preset-es2015'].map(require.resolve)}
+				loader:'babel-loader',
+				options:{presets:['es2015']}
 			}]
 		}]
 	},
