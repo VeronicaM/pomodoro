@@ -39,6 +39,6 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-var server = app.listen(8000, function () {
-  console.log('listening on port 8000');
+var server = app.listen(80, function () {
+  console.log('listening on port 80');
 });
