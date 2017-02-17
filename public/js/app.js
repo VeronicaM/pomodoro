@@ -250,24 +250,18 @@ $(function ()
 		 	 let author = quote.quoteAuthor || "Unknown";
 		 	 $(".text").text('" '+quote.quoteText+' "');
 		 	 $(".author").text(author);
-		 });
+		 });	
 	}
 
 	  function getLocation() {
-		// if (navigator.geolocation) {
-		// 	 navigator.geolocation.getCurrentPosition(getCoords,showError);
-		
-		// } else {
-		// 		 $("#weatherInfo").html("<p>Enable location or Search for your city</p>");
-		//   }
-		   $.getJSON("http://ipinfo.io",function(data){
+		   $.get("http://ipinfo.io",function(data){
 		   	//	console.log('location data',data);
 		   		location.lat= data.loc.split(",")[0];
 		   		location.lon= data.loc.split(",")[1];
 		   		location.city= data.city;
 		   		location.country= data.country;
-		   	//	console.log('location data',location);
-		   });
+		   		console.log('location data',location);
+		   },"jsonp");
 	    }
 	function getCoords(result) {
 		 query = "lat="+result.coords.latitude+"&lon="+result.coords.longitude;
