@@ -26,13 +26,15 @@ html
 				include ./settings
 		div.quoteTrigger Quote
 		div.quote 
-			div.headlineQ Settings
+			div.headlineQ
 				div.close#closeQuote ⌘
 			div.text
 			div.shareQ
 				div
 					div.author
 					a(href="#" id="twitter") 
+
+		include ./weather-widget
 		script(src="/public/assets/bundle.js")
 
 

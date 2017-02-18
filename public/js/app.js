@@ -7,6 +7,7 @@ $(function ()
  { 
  	let settings= localStorage.getItem('pomodoroSettings'), 
  		location={},
+ 		unit="metric",
  		minutes= 0,
  		seconds=59,
  		pomodoroId="",
@@ -33,7 +34,7 @@ $(function ()
 	    $('head')[0].append(link[0]);
        getQuote();
        getLocation();
-       getWeather();
+     
 
  	   $("#closeSettings").on("click",function(e){
  	   		$(".menu").hide();
@@ -260,7 +261,7 @@ $(function ()
 		   		location.lon= data.loc.split(",")[1];
 		   		location.city= data.city;
 		   		location.country= data.country;
-		   		console.log('location data',location);
+		   		  getWeather();
 		   },"jsonp");
 	    }
 	function getCoords(result) {
@@ -269,16 +270,14 @@ $(function ()
 	}
 
 	function getWeather(query){
-			$.post("/weather",{"lat":"54","lon":"90","unit":"imperial"}).done(function(wResult){	
-
+			$.post("/weather",{"lat":location.lat,"lon":location.lon,"units":unit}).done(function(wResult){	
 			      let data = {
 			      	temp: Math.round(wResult.main.temp),
-			      	description:wResult.weather[0].description,
-			      	imgClass:"http://openweathermap.org/img/w/"+wResult.weather[0].id,
-			      	weatherFor:wResult.name
+			      	imgURL:"http://openweathermap.org/img/w/"+wResult.weather[0].icon+".png",
 			      }
-			   //  console.log(wResult,data);	    
-			  
+			      $(".weatherInfo img:first-of-type").attr("src",data.imgURL);
+			      $(".weatherInfo span:first-of-type").text(data.temp);
+			      $(".weatherInfo div:first-of-type").text(location.city+", "+location.country);
 			});
 	}
 });
