@@ -7,12 +7,12 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/quote',function(req,res,next){
-	  	
 		var request = require('request');
 		request('http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en', function (error, response, body) {
 		  if (!error && response.statusCode == 200) {
 		   // console.log(body) // Show the HTML for the Google homepage.
-		    res.status(200).json(JSON.parse(body));
+		     let quote = body.replace("\\","");
+		    res.status(200).json(JSON.parse(quote));
 		  }
 		});
 
