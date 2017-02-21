@@ -36,11 +36,14 @@ $(function ()
        getLocation();
      
 
- 	   $("#closeSettings").on("click",function(e){
- 	   		$(".menu").hide();
- 	   });
+ 	   // $("#closeSettings").on("click",function(e){
+ 	   // 		$(".menu").hide();
+ 	   // });
  	    $("#closeQuote").on("click",function(e){
  	   		$(".quote").hide();
+ 	   });
+ 	   $("#closeWeather").on("click",function(e){
+ 	   		$(".weatherWidget").hide();
  	   });
 	   $("#start").on("click",function(e){
 	   	 const toggle = $(this).text();
@@ -64,6 +67,20 @@ $(function ()
 	   		}
 	   		
 	   });
+	   $(".temperature").on("click",function(e){
+	   		console.log($(this).text());
+	   		var text = $(this).text();
+	   		if(text.indexOf("C")>=0){
+	   			text = text.replace("C","F");
+	   			unit = "imperial";
+	   			getWeather();
+	   		}else{
+	   			text = text.replace("F","C");
+	   			unit = "metric";
+	   			getWeather();
+	   		}
+	   		$(this).text(text);
+	   });
 	   $(".settings").on("click",function(e){
 	   	if(e.target==$(".settings")[0]){
 	   		$(".menu").toggle();
@@ -72,6 +89,11 @@ $(function ()
 	   $(".quoteTrigger").on("click",function(e){
 	   	if(e.target==$(".quoteTrigger")[0]){
 	   		$(".quote").toggle();
+	   	}
+	   });
+	    $(".weatherTrigger").on("click",function(e){
+	   	if(e.target==$(".weatherTrigger")[0]){
+	   		$(".weatherWidget").toggle();
 	   	}
 	   });
 	   $(".settings-list div").on("click",function(e){
@@ -264,20 +286,20 @@ $(function ()
 		   		  getWeather();
 		   },"jsonp");
 	    }
-	function getCoords(result) {
-		 query = "lat="+result.coords.latitude+"&lon="+result.coords.longitude;
-		 getWeather(query);
-	}
+
 
 	function getWeather(query){
 			$.post("/weather",{"lat":location.lat,"lon":location.lon,"units":unit}).done(function(wResult){	
 			      let data = {
 			      	temp: Math.round(wResult.main.temp),
+			      	description:wResult.weather[0].description,
 			      	imgURL:"http://openweathermap.org/img/w/"+wResult.weather[0].icon+".png",
 			      }
-			      $(".weatherInfo img:first-of-type").attr("src",data.imgURL);
-			      $(".weatherInfo span:first-of-type").text(data.temp);
-			      $(".weatherInfo div:first-of-type").text(location.city+", "+location.country);
+			      var unitSymbol = unit == "metric"? "C":"F";
+			      $(".weatherIco").attr("src",data.imgURL);
+			      $(".weatherInfo span:first-of-type").text(data.temp+" "+String.fromCharCode(176)+" "+unitSymbol);
+			      $(".descriptionText").text(data.description);
+			      $(".location").text(location.city+", "+location.country);
 			});
 	}
 });

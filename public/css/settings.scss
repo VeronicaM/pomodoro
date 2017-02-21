@@ -1,9 +1,12 @@
 .settings{
     font-size: 35px;
-    color: rgba(0,0,0,0.75);
+    color: rgba(0, 0, 0, 0.75);
     position: fixed;
-    bottom: 0px;
+    top: 0px;
+    right: 10px;
+    text-align: right;
     height: 60px;
+    cursor: pointer;
      @extend  .noselection;
      &:hover{
       // animation:rotateCog 0.3s linear 1 alternate;
@@ -23,14 +26,14 @@
     position: relative;
     bottom: 62px;
     border-radius: 0 0 20px 20px;
-    &:before{
-       content:"◂";
-       transform: rotate(-90deg);
-       display: inline-block;
-       font-size: 40px;
-       margin: -13px 0 0 -14px;
-       color: black;
-    }
+    // &:before{
+    //    content:"◂";
+    //    transform: rotate(-90deg);
+    //    display: inline-block;
+    //    font-size: 40px;
+    //    margin: -13px 0 0 -14px;
+    //    color: black;
+    // }
 }
 .close{
   float: right;
@@ -47,10 +50,10 @@
 .menu {
       display:none;
       position: relative;
-      bottom: 370px;
+    // bottom: 370px;
       font-size: 19px;
       background-color: rgba(0, 0, 0, 0.85);
-      height: 300px;
+      height: 192px;
       width: 430px;
       color: white;
       text-align: center;

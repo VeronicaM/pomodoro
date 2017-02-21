@@ -190,7 +190,20 @@ time{
 	font-size:25px;
 	margin:0 auto;
 }
-
+.description{
+      display: flex;
+    align-items: center;
+}
+.temperature{
+  cursor:hand;
+}
+.weatherTrigger{
+      font-size: 22px;
+    position: absolute;
+    top: 0;
+    left: %;
+    cursor: pointer;
+}
 .animateDigit {
   animation-name: digitAnimation;
   animation-duration:1s;
