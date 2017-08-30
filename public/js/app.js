@@ -268,12 +268,9 @@ $(function ()
 	  return ret;
 	}
 	function getQuote(){
-		$.getJSON('http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en',function(quote){
-		 	 quoteLink = quote.quoteLink;
-		 	 let author = quote.quoteAuthor || "Unknown";
-		 	 $(".text").text('" '+quote.quoteText+' "');
-		 	 $(".author").text(author);
-		 });	
+		$.getJSON('https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=jsonp&jsonp=?')
+		 .done(update)
+         .fail(handleErr);
 	}
 
 	  function getLocation() {
@@ -303,5 +300,16 @@ $(function ()
 			      $(".descriptionText").text(data.description);
 			      $(".location").text(location.city+", "+location.country);
 			});
+	}
+
+	function update(quote) {
+	         quoteLink = quote.quoteLink;
+		 	 let author = quote.quoteAuthor || "Unknown";
+		 	 $(".text").text('" '+quote.quoteText+' "');
+		 	 $(".author").text(author);
+	}
+
+	function handleErr(jqxhr, textStatus, err) {
+	  console.log("Request Failed: " + textStatus + ", " + err);
 	}
 });
