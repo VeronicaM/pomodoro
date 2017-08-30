@@ -76,8 +76,8 @@ body{
 }
 .quoteTrigger{
     font-size: 22px;
-    position: absolute;
-    bottom: 0;
+    position: fixed;
+    bottom: 10px;
     left: 28%;
     cursor: pointer;
 }
@@ -131,6 +131,8 @@ body{
     width: 100%;
     height: 20%;
     min-height: 200px;
+    position: fixed;
+    top: 27%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -154,7 +156,7 @@ body{
     }
 }
 time{
-	font-size:490%;
+	font-size:126px;
 	font-family: "Digital-7";
   display: flex;
   margin-bottom: 10px;
@@ -180,6 +182,7 @@ time{
      @media screen and (min-width: 600px) {
          width: 80px;
          height: 133px;
+         font-size:126px;
       }
 	}
   div:nth-of-type(2) span{

@@ -1,23 +1,28 @@
 const path = require("path");
 const webpack = require("webpack");
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports ={
 	context:path.resolve('public'),
 	entry:["./js/app.js"],
 	output:{
 		path:path.resolve('build/'),
-		publicPath:'/public/assets/',
+		publicPath:'./',
 		filename:"bundle.js"
 	},
 	devServer:{
       contentBase:'public'
 	},
-	plugins:[new ExtractTextPlugin("styles.css"), 
-	new webpack.ProvidePlugin({
-		$:"jquery",
-		jQuery:"jquery",
-		"window.jQuery":"jquery"
-	})
+	plugins:[
+		new ExtractTextPlugin("styles.css"), 
+		new webpack.ProvidePlugin({
+			$:"jquery",
+			jQuery:"jquery",
+			"window.jQuery":"jquery"
+		}), 
+		new HtmlWebpackPlugin({
+     	 	template: './views/index.jade'
+    	})
 	],
 	module:{
 		rules:[
@@ -59,7 +64,14 @@ module.exports ={
 				loader:'babel-loader',
 				options:{presets:['es2015']}
 			}]
-		}]
+		},{
+			test:/\.jade$/,
+			exclude: /node_modules/,
+			use :[{
+				loader:'jade-loader'
+			}]
+		}
+		]
 	},
 	resolve:{
 		extensions:['.js','.es6']

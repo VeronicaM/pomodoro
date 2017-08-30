@@ -268,7 +268,7 @@ $(function ()
 	  return ret;
 	}
 	function getQuote(){
-		$.getJSON('/quote',function(quote){
+		$.getJSON('http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en',function(quote){
 		 	 quoteLink = quote.quoteLink;
 		 	 let author = quote.quoteAuthor || "Unknown";
 		 	 $(".text").text('" '+quote.quoteText+' "');
@@ -289,7 +289,9 @@ $(function ()
 
 
 	function getWeather(query){
-			$.post("/weather",{"lat":location.lat,"lon":location.lon,"units":unit}).done(function(wResult){	
+		    var data = {"lat":location.lat,"lon":location.lon,"units":unit};
+		    var url = "http://api.openweathermap.org/data/2.5/weather?lat="+data.lat+"&lon="+data.lon+"&appid=5a65ddcbbe5bbecec36b72359651372e&units="+data.units;
+			$.post(url).done(function(wResult){	
 			      let data = {
 			      	temp: Math.round(wResult.main.temp),
 			      	description:wResult.weather[0].description,
