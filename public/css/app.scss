@@ -1,29 +1,43 @@
 @import "commons";
 @import "colors";
 @import "settings";
-
 @font-face {
-  font-family: 'Digital-7';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Digital-7'), url('../fonts/digital-7.ttf') format('truetype');
+    font-family: 'Digital-7';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Digital-7'), url('../fonts/digital-7.ttf') format('truetype');
 }
 
-
-body{
-  display: flex;
-  align-items:center;
-  background-image:url('../images/test.jpg');
-  background-size: cover;
-  overflow: auto;
-  height: 97%;
-  position: relative;
-  z-index: -3;
-  top: 0;
+body {
+    display: flex;
+    align-items: center;
+    background-size: cover;
+    overflow: hidden;
+    height: 97%;
+    position: relative;
+    z-index: -3;
+    margin: 0;
+    padding: 10px;
+    &:after {
+        content: "";
+        background: url('https://unsplash.it/1400/610?random') no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        opacity: 0.95;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        z-index: -4;
+    }
 }
-.quote{
-    background-color: rgba(0,0,0,0.75);
-    color: rgba(255,255,255,0.7);
+
+.quote {
+    background-color: rgba(0, 0, 0, 0.75);
+    color: rgba(255, 255, 255, 0.7);
     margin-right: 26px;
     font-size: 17px;
     border-radius: 10px;
@@ -33,38 +47,41 @@ body{
     left: 22%;
     width: 70%;
     z-index: -2;
-    .text{
-      text-align: center;
-      padding: 10px 10px 0 10px;
+    .text {
+        text-align: center;
+        padding: 10px 10px 0 10px;
     }
-  @media screen and (min-width: 600px) {
-       left: 28%;
-       width: 50%;
+    @media screen and (min-width: 600px) {
+        left: 28%;
+        width: 50%;
     }
 }
-.author{
+
+.author {
     text-align: center;
     padding-bottom: 5px;
     color: yellow;
 }
-.shareQ{
+
+.shareQ {
     justify-content: center;
     opacity: 0;
-
-    div{
-       display: flex;
-       flex-direction: row;
-       align-items:center;
-       justify-content: center;
-       padding-bottom: 5px;
+    div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        padding-bottom: 5px;
     }
 }
-.animateQuote{
-   animation:quoteAnimation 2s ease 1;
-   animation-fill-mode:forwards;
+
+.animateQuote {
+    animation: quoteAnimation 2s ease 1;
+    animation-fill-mode: forwards;
 }
-#twitter{
-    background-image:url('../images/twitter.svg');
+
+#twitter {
+    background-image: url('../images/twitter.svg');
     height: 18px;
     width: 20px;
     display: inline-block;
@@ -74,14 +91,19 @@ body{
     margin-left: 13px;
     margin-bottom: 8px;
 }
-.quoteTrigger{
+
+.quoteTrigger {
     font-size: 22px;
     position: fixed;
     bottom: 10px;
     left: 28%;
     cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.62);
+    color: white;
+    padding: 2px;
 }
-.headlineQ{
+
+.headlineQ {
     background-color: black;
     border-radius: 7px 7px 0 0;
     text-align: center;
@@ -89,189 +111,205 @@ body{
     padding: 2px 0 2px 0;
     height: 20px;
 }
-.message{
+
+.message {
     width: 70%;
     text-align: left;
     margin-left: 30%;
     margin-bottom: 10px;
+    margin-top: 18px;
+    font-size: 22px;
 }
 
-.weatherWidget{
+.weatherWidget {
     position: absolute;
     top: 30px;
     min-height: 100px;
     width: 200px;
-    background-color: rgba(0,0,0,0.5);
-    color:white;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
 }
-.weatherIco{
-  height: 50px;
-  width: 50px;
+
+.weatherIco {
+    height: 50px;
+    width: 50px;
 }
-.weatherInfo{
-  .description{
-    display: flex;
-    flex-direction: column;
-    margin-left: 4%;
-    img{
-      width: 100px;
-      height: 100px;
+
+.weatherInfo {
+    .description {
+        display: flex;
+        flex-direction: column;
+        margin-left: 4%;
+        img {
+            width: 100px;
+            height: 100px;
+        }
     }
-  }
-   .temperature{
-      margin-left: 30%;
-      font-size: 35px;
+    .temperature {
+        margin-left: 30%;
+        font-size: 35px;
     }
-    .location{
-      margin-left: 20%;
-      padding: 15px;
+    .location {
+        margin-left: 20%;
+        padding: 15px;
     }
 }
-#timer{
-    width: 100%;
+
+#timer {
+    width: 50%;
     height: 20%;
+    min-width: 677px;
     min-height: 200px;
     position: fixed;
     top: 27%;
+    left: 28%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     align-items: center;
-    button{
+    background-color: rgba(0, 0, 0, 0.75);
+    color: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    button {
         padding: 10px;
         box-shadow: 0 0 22px #000 inset;
         margin-left: 15px;
         width: 100px;
         height: 63px;
         font-size: 30px;
-        background-color: $startBColor;
         border-radius: 9px;
-        color: $startTColor;
-        &:focus{
-          outline:0;
+        &:focus {
+            outline: 0;
         }
-        &:hover{
-          background-color:$startHBColor;
+        &:hover {
+            background-color: $startHBColor;
         }
     }
 }
-time{
-	font-size:126px;
-	font-family: "Digital-7";
-  display: flex;
-  margin-bottom: 10px;
-  display: inline-block;
-   
-	div{
-      border-style:solid;
-      border-width:0.1px;
-      display: inline-block;
-      width: 69px;
-      height: 92px;
 
-      & span{
-         position:relative;
-         top:10px;
-         left:10px;
-         @extend  .animateElapsedTime;
-      } 
-      background-color:$digits-color;
-      color:$digit;
-      margin-right:2px;	
-
-     @media screen and (min-width: 600px) {
-         width: 80px;
-         height: 133px;
-         font-size:126px;
-      }
-	}
-  div:nth-of-type(2) span{
+time {
+    font-size: 126px;
+    font-family: "Digital-7";
+    display: flex;
+    margin-bottom: 10px;
     display: inline-block;
-   @extend .animateDigit;
-  }
-	div:nth-of-type(3){
-        border:none;
-        background-color:transparent;
+    div {
+        display: inline-block;
+        width: 69px;
+        height: 92px;
+        & span {
+            position: relative;
+            top: 10px;
+            left: 10px;
+            @extend .animateElapsedTime;
+        }
+        margin-right:2px;
+        @media screen and (min-width: 600px) {
+            width: 80px;
+            height: 133px;
+            font-size: 126px;
+        }
+    }
+    div:nth-of-type(2) span {
+        display: inline-block;
+        @extend .animateDigit;
+    }
+    div:nth-of-type(3) {
+        border: none;
+        background-color: transparent;
         position: relative;
         left: 25px;
         top: 15px;
+    }
+    @media screen and (min-width: 600px) {
+        left: 28%;
+        top: 41%;
+        font-size: 800%;
+    }
+}
 
-	}
-	@media screen and (min-width: 600px) {
-	   left: 28%;
-   	   top: 41%;
-	   font-size:800%;
-	}
+.mountain {
+    background-image: url('../images/test.jpg');
+    height: 400px;
+    width: 700px;
+    color: white;
+    font-weight: bold;
+    font-size: 25px;
+    margin: 0 auto;
 }
-.mountain{
-	background-image:url('../images/test.jpg');
-	height:400px;
-	width:700px;
-	color:white;
-	font-weight:bold;
-	font-size:25px;
-	margin:0 auto;
-}
-.description{
-      display: flex;
+
+.description {
+    display: flex;
     align-items: center;
 }
-.temperature{
-  cursor:hand;
+
+.temperature {
+    cursor: hand;
 }
-.weatherTrigger{
-      font-size: 22px;
+
+.weatherTrigger {
+    font-size: 22px;
     position: absolute;
     top: 0;
-    left: %;
     cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.62);
+    color: white;
+    padding: 2px;
 }
+
 .animateDigit {
-  animation-name: digitAnimation;
-  animation-duration:1s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease;
-  animation-fill-mode: none;
-  animation-play-state:paused;
+    animation-name: digitAnimation;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+    animation-fill-mode: none;
+    animation-play-state: paused;
 }
-.animateElapsedTime{
-   animation-name: elapsedTime;
-   animation-duration:1.5s;
-   animation-iteration-count: infinite;
-   animation-timing-function: ease;
-   animation-fill-mode: none;
-   animation-play-state:paused;
+
+.animateElapsedTime {
+    animation-name: elapsedTime;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+    animation-fill-mode: none;
+    animation-play-state: paused;
 }
-.runAnimation{
-  animation-play-state:running !important;
+
+.runAnimation {
+    animation-play-state: running !important;
 }
-.stopAnimation{
-  animation-play-state:paused !important;;
+
+.stopAnimation {
+    animation-play-state: paused !important;
+    ;
 }
+
 @keyframes digitAnimation {
-  0% {
-   transform: scale(1);
-  }
-  100% {
-    transform: scale(2);
-  }
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(2);
+    }
 }
-@keyframes elapsedTime{
-  0% {
-   opacity: 1;
-  }
-  1%{
-    opacity: 0;
-  }
-  100% {
-    opacity:  1;
-  }
+
+@keyframes elapsedTime {
+    0% {
+        opacity: 1;
+    }
+    1% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
-@keyframes quoteAnimation{
-  0% {
-   opacity: 0;
-  }
-  100% {
-    opacity:  1;
-  }
+
+@keyframes quoteAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }

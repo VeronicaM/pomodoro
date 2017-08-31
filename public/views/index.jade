@@ -1,7 +1,7 @@
 html
 	head
 		title Pomodoro
-		link(rel="stylesheet" type="text/css" href="./styles.css")
+		link(rel="stylesheet" type="text/css" href="public/assets/styles.css")
 		
 		meta(http-equiv="Content-type" content="text/html; charset=UTF-8")
 		html(lang="en-us")
@@ -27,7 +27,7 @@ html
 		div.quoteTrigger Quote
 		div.quote 
 			div.headlineQ
-				div.close#closeQuote ⌘
+				div.close#closeQuote X
 			div.text
 			div.shareQ
 				div
@@ -35,5 +35,6 @@ html
 					a(href="#" id="twitter") 
 		div.weatherTrigger Weather			
 		include ./weather-widget
+		script(src="/public/assets/bundle.js")
 
 
