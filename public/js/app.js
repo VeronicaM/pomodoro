@@ -57,13 +57,15 @@ $(function() {
                     $(this).text("Start");
                     resetPomodoro();
                 }
-            } else if (toggle == "Take Break") {
+                storeCurrentTime(minutes, seconds, false, false);
+            } else if (toggle == "Break") {
                 resetPomodoro();
                 $(this).text("Start");
                 $(".message").text("Break Time");
                 minutes = settings.break;
                 elapseTime();
                 isBreak = true;
+                storeCurrentTime(minutes, seconds, false, isBreak);
             }
 
         });
@@ -134,7 +136,11 @@ $(function() {
             'break': oldSettings.break || '5',
             'countdown': oldSettings.countdown || '25',
             'breakSound': oldSettings.breakSound || 'good-morning.mp3',
-            'workSound': oldSettings.workSound || 'attention-seeker.mp3'
+            'workSound': oldSettings.workSound || 'attention-seeker.mp3',
+            'running': oldSettings.running || false,
+            'minutes': oldSettings.minutes !== null ? oldSettings.minutes : oldSettings.countdown !== null ? oldSettings.countdown : '25',
+            'seconds': oldSettings.seconds || '00',
+            'isBreak': oldSettings.isBreak || false
         };
         settings = newSettings;
         localStorage.setItem('pomodoroSettings', JSON.stringify(newSettings));
@@ -147,13 +153,25 @@ $(function() {
         localStorage.setItem('pomodoroSettings', JSON.stringify(newSettings));
     }
 
+    function storeCurrentTime(minutes, seconds, running, isBreak) {
+        updateStore({ "minutes": minutes });
+        updateStore({ "seconds": seconds });
+        updateStore({ 'running': running });
+        updateStore({ 'isBreak': isBreak });
+    }
+
     function initializeValues() {
         pomodoroEndAudio = require("file-loader!../audio/" + settings.breakSound);
         breakEndAudio = require("file-loader!../audio/" + settings.workSound);
-        minutes = settings.countdown;
+        minutes = settings.running ? settings.minutes : settings.countdown;
+        seconds = settings.running ? settings.seconds : '00';
+        isBreak = settings.isBreak || false;
         pomodoroEndMsg = "Hey, your pomodoro session of " + settings.countdown + " minutes is over ! Come take a break and cross out your finished tasks !";
         breakEndMsg = "Hey, your break of " + settings.break+" minutes is over. Do you want to start a new pomodoro ?";
+        var message = isBreak ? "Break time" : "Time until break";
+        $('.message').text(message);
         setTimeMinutes(minutes);
+        setTimeSeconds(seconds);
         setStoredTimerSettings();
         setSelectedSettings();
     }
@@ -179,8 +197,13 @@ $(function() {
     window.onload = function() {
         loadStore();
         initializeValues();
-        if (Notification.permission !== "granted")
+        if (settings.running) {
+            elapseTime();
+            $("#start").text("Stop");
+        }
+        if (Notification.permission !== "granted") {
             Notification.requestPermission();
+        }
     };
 
     function notifySessionEnd(message, audioN, title) {
@@ -226,7 +249,10 @@ $(function() {
     }
 
     function elapseTime() {
-        minutes--;
+        var check = $('#start').text() === "Break";
+        if ((!check && settings.minutes === settings.countdown) || (isBreak && settings.minutes === settings.break)) {
+            minutes--;
+        }
         setTimeMinutes(minutes);
         setTimeSeconds(seconds);
         pomodoroId = setInterval(function() {
@@ -236,19 +262,23 @@ $(function() {
                     minutes--;
                     setTimeMinutes(minutes);
                     seconds = 59;
+                    setTimeSeconds(seconds);
+                    storeCurrentTime(minutes, seconds, true, isBreak);
                     //  	animateDigit();
                 } else {
                     //console.log("finished countdown",seconds,minutes);
                     clearInterval(pomodoroId);
 
                     if (!isBreak) {
-                        $("#start").text("Take Break");
+                        $("#start").text("Break");
                         notifySessionEnd(pomodoroEndMsg, pomodoroEndAudio, "Break time");
-
+                        storeCurrentTime(minutes, seconds, false, isBreak);
                     } else {
                         resetPomodoro();
                         notifySessionEnd(breakEndMsg, breakEndAudio, "Break is over");
+                        $("#start").text("Start");
                         isBreak = false;
+                        storeCurrentTime(minutes, seconds, false, isBreak);
                     }
 
                 }
@@ -256,7 +286,9 @@ $(function() {
                 seconds--;
                 setTimeSeconds(seconds);
                 updateTitlePomodoro();
+                storeCurrentTime(minutes, seconds, true, isBreak);
             }
+
         }, 1000);
     }
 
