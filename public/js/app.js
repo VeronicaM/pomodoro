@@ -341,7 +341,7 @@ $(function() {
             let data = {
                 temp: Math.round(wResult.main.temp),
                 description: wResult.weather[0].description,
-                imgURL: "http://openweathermap.org/img/w/" + wResult.weather[0].icon + ".png",
+                imgURL: "http://openweathermap.org/img/w/" + wResult.weather[0].icon + ".png"
             }
             var unitSymbol = unit == "metric" ? "C" : "F";
             $(".weatherIco").attr("src", data.imgURL);

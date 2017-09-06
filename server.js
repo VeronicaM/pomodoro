@@ -19,7 +19,7 @@ app.use('/', routes);
 
 // Only load this middleware in dev mode (important).
 
-if (process.env.NODE_ENV=== 'development') {
+if (process.env.NODE_ENV === 'development') {
   var webpackMiddleware = require("webpack-dev-middleware");
   var webpack = require('webpack');
 
