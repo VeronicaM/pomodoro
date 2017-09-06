@@ -16,6 +16,7 @@ $(function() {
         pomodoroEndAudio = "",
         breakEndAudio = "",
         quoteLink = "",
+        running = settings.running,
         sounds = {
             "Jubilation": "jubilation.mp3",
             "Give me your attention": "attention-seeker.mp3",
@@ -28,48 +29,19 @@ $(function() {
         soundsNames = swap(sounds);
 
     $(document).ready(function() {
+        //add favicon to html header 
         const link = $("<link></link>");
         link[0].type = 'image/x-icon';
         link[0].rel = 'shortcut icon';
         link[0].href = favIco;
         $('head')[0].append(link[0]);
+        // retrieve and display quotes and weather 
         getQuote();
         getLocation();
 
+        //toggle Celcius/ Farenheit 
 
-        // $("#closeSettings").on("click",function(e){
-        // 		$(".menu").hide();
-        // });
-        $("#closeQuote").on("click", function(e) {
-            $(".quote").hide();
-        });
-        $("#closeWeather").on("click", function(e) {
-            $(".weatherWidget").hide();
-        });
-        $("#start").on("click", function(e) {
-            const toggle = $(this).text();
-            if (toggle == "Start") {
-                $(this).text("Stop");
-                resetPomodoro();
-                elapseTime();
-            } else if (toggle == "Stop") {
-                if (confirm("Are you sure you want to stop the timer ?")) {
-                    $(this).text("Start");
-                    resetPomodoro();
-                }
-                storeCurrentTime(minutes, seconds, false, false);
-            } else if (toggle == "Break") {
-                resetPomodoro();
-                $(this).text("Start");
-                $(".message").text("Break Time");
-                minutes = settings.break;
-                elapseTime();
-                isBreak = true;
-                storeCurrentTime(minutes, seconds, false, isBreak);
-            }
-
-        });
-        $(".temperature").on("click", function(e) {
+           $(".temperature").on("click", function(e) {
             console.log($(this).text());
             var text = $(this).text();
             if (text.indexOf("C") >= 0) {
@@ -83,6 +55,15 @@ $(function() {
             }
             $(this).text(text);
         });
+
+        //add clickListeners for gadgets
+        $("#closeQuote").on("click", function(e) {
+            $(".quote").hide();
+        });
+        $("#closeWeather").on("click", function(e) {
+            $(".weatherWidget").hide();
+        });
+
         $(".settings").on("click", function(e) {
             if (e.target == $(".settings")[0]) {
                 $(".menu").toggle();
@@ -103,18 +84,10 @@ $(function() {
             $(this).addClass("selected");
             setSelectedSettings();
         });
-        $(".timerSetting").change(function(e) {
-            let newOption = {},
-                key = this.id,
-                value = "";
-            if (key.indexOf("S") > 0) {
-                value = sounds[this.value];
-            } else { value = this.value; }
-            newOption[key] = value;
-            updateStore(newOption);
-            initializeValues();
-        });
-        $(".quote").hover(function(e) {
+
+        //show quote author and add twitter sharing action
+
+          $(".quote").hover(function(e) {
             $(".shareQ").addClass("animateQuote");
         });
         $(".quote").mouseleave(function(e) {
@@ -128,6 +101,50 @@ $(function() {
             var twtLink = 'http://twitter.com/home?status=' + encodeURIComponent(textToTweet);
             window.open(twtLink, '_blank');
         });
+
+        //click Listener for Pomodoro button 
+        $("#start").on("click", function(e) {
+            const toggle = $(this).text();
+            if (toggle == "Start") {
+                $(this).text("Stop");
+                resetPomodoro();
+                running = true;
+                minutes--;
+                elapseTime();
+            } else if (toggle == "Stop") {
+                if (confirm("Are you sure you want to stop the timer ?")) {
+                    $(this).text("Start");
+                    resetPomodoro();
+                }
+                running = false;
+                isBreak = false;
+                storeCurrentTime(minutes, seconds, running, isBreak);
+            } else if (toggle == "Break") {
+                resetPomodoro();
+                $(this).text("Stop");
+                $(".message").text("Break Time");
+                minutes = settings.break;
+                isBreak = true;
+                running = true;
+                minutes--;
+                elapseTime();
+            }
+             storeCurrentTime(minutes, seconds, running, isBreak);
+        });
+
+     
+        $(".timerSetting").change(function(e) {
+            let newOption = {},
+                key = this.id,
+                value = "";
+            if (key.indexOf("S") > 0) {
+                value = sounds[this.value];
+            } else { value = this.value; }
+            newOption[key] = value;
+            updateStore(newOption);
+            initializeValues();
+        });
+      
     });
 
     function loadStore() {
@@ -166,6 +183,7 @@ $(function() {
         minutes = settings.running ? settings.minutes : settings.countdown;
         seconds = settings.running ? settings.seconds : '00';
         isBreak = settings.isBreak || false;
+        running = settings.running;
         pomodoroEndMsg = "Hey, your pomodoro session of " + settings.countdown + " minutes is over ! Come take a break and cross out your finished tasks !";
         breakEndMsg = "Hey, your break of " + settings.break+" minutes is over. Do you want to start a new pomodoro ?";
         var message = isBreak ? "Break time" : "Time until break";
@@ -188,6 +206,7 @@ $(function() {
         $("#breakSound").val(soundsNames[settings.breakSound]);
         $("#workSound").val(soundsNames[settings.workSound]);
     }
+
     $(document).on("mouseup", function(e) {
         if ($(".menu").is(":visible") && e.target !== $(".settings")[0] && e.target !== $(".menu")[0] && $(".menu").has(e.target).length === 0) {
             $(".menu").hide();
@@ -197,7 +216,7 @@ $(function() {
     window.onload = function() {
         loadStore();
         initializeValues();
-        if (settings.running) {
+        if (running) {
             elapseTime();
             $("#start").text("Stop");
         }
@@ -249,36 +268,25 @@ $(function() {
     }
 
     function elapseTime() {
-        var check = $('#start').text() === "Break";
-        if ((!check && settings.minutes === settings.countdown) || (isBreak && settings.minutes === settings.break)) {
-            minutes--;
-        }
         setTimeMinutes(minutes);
         setTimeSeconds(seconds);
         pomodoroId = setInterval(function() {
-            //$("time div:nth-of-type(2) span").removeClass("runAnimation");	
             if (seconds == 0) {
                 if (minutes != 0) {
                     minutes--;
                     setTimeMinutes(minutes);
                     seconds = 59;
                     setTimeSeconds(seconds);
-                    storeCurrentTime(minutes, seconds, true, isBreak);
-                    //  	animateDigit();
                 } else {
-                    //console.log("finished countdown",seconds,minutes);
-                    clearInterval(pomodoroId);
-
+                   clearInterval(pomodoroId);
                     if (!isBreak) {
                         $("#start").text("Break");
                         notifySessionEnd(pomodoroEndMsg, pomodoroEndAudio, "Break time");
-                        storeCurrentTime(minutes, seconds, false, isBreak);
                     } else {
                         resetPomodoro();
                         notifySessionEnd(breakEndMsg, breakEndAudio, "Break is over");
                         $("#start").text("Start");
                         isBreak = false;
-                        storeCurrentTime(minutes, seconds, false, isBreak);
                     }
 
                 }
@@ -286,15 +294,11 @@ $(function() {
                 seconds--;
                 setTimeSeconds(seconds);
                 updateTitlePomodoro();
-                storeCurrentTime(minutes, seconds, true, isBreak);
             }
-
+            storeCurrentTime(minutes, seconds, running, isBreak);
         }, 1000);
     }
 
-    function animateDigit() {
-        $("time div:nth-of-type(2) span").addClass("runAnimation");
-    }
 
     function updateTitlePomodoro() {
         const min = minutes.toString().length > 1 ? minutes : "0" + minutes;
