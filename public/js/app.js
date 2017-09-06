@@ -15,7 +15,6 @@ $(function() {
         breakEndMsg = "",
         pomodoroEndAudio = "",
         breakEndAudio = "",
-        quoteLink = "",
         running = settings.running,
         sounds = {
             "Jubilation": "jubilation.mp3",
@@ -316,7 +315,6 @@ $(function() {
 
     function getQuote() {
         $.getJSON('/quote', function(quote) {
-            quoteLink = quote.quoteLink;
             let author = quote.quoteAuthor || "Unknown";
             $(".text").text('" ' + quote.quoteText + ' "');
             $(".author").text(author);

@@ -8,11 +8,22 @@ router.get('/', function(req, res, next) {
 
 router.get('/quote', function(req, res, next) {
     var request = require('request');
-    request('http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en', function(error, response, body) {
+    request('http://api.forismatic.com/api/1.0/?method=getQuote&format=text&lang=en', function(error, response, body) {
         if (!error && response.statusCode == 200) {
             // console.log(body) // Show the HTML for the Google homepage.
-            let quote = body.replace("\\", "");
-            res.status(200).json(JSON.parse(quote));
+            let quoteBody = body;
+            let quote = {};
+             
+            if(body.indexOf('(')){
+                quoteBody = body.split('\(');
+                quote.quoteText = quoteBody[0];
+                quote.quoteAuthor = quoteBody[1].substring(0, quoteBody[1].length-1);
+            }else{
+                quote.quoteText = quoteBody;
+                quote.quoteAuthor = "Unknown";
+            }
+            console.log(quote,quoteBody);
+            res.status(200).json(quote);
         }
     });
 
