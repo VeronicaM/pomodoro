@@ -14,7 +14,7 @@ router.get('/quote', function(req, res, next) {
             let quoteBody = body;
             let quote = {};
              
-            if(body.indexOf('(') > -1){
+            if(body.indexOf('(') > -1  ){
                 quoteBody = body.split('\(');
                 quote.quoteText = quoteBody[0];
                 quote.quoteAuthor = quoteBody[1].substring(0, quoteBody[1].length-1);

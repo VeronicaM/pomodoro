@@ -120,7 +120,33 @@
         }
     }
 }
-
+#links table {
+    color:white;
+    cursor: default;
+    a{  
+        padding-left:10px;
+        color:rgb(188, 247, 255);
+        text-decoration: none;
+        &:hover{
+            text-decoration: underline;
+        }
+    }
+}
+#LinkSO{
+    overflow-y: scroll;
+    position: relative;
+    top: -24px;
+    left: -32px;
+    padding: 7px;
+    height: 144px;
+}
+.addLink{
+    display: flex;
+    flex-direction: column !important;
+}
+.deleteLink{
+    cursor: pointer;
+}
 @keyframes rotateCog {
     0% {
         transform: rotate(0deg);

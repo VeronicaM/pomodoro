@@ -1,7 +1,8 @@
 require("../css/app.scss");
 const favIco = require("../favicon.png");
 const blackCat = require("../images/black-cat.png");
-
+import {Link} from './links.js';
+import {getLinks, removeLink, saveLink} from "./repository.js";
 
 $(function() {
     let settings = localStorage.getItem('pomodoroSettings'),
@@ -15,7 +16,8 @@ $(function() {
         breakEndMsg = "",
         pomodoroEndAudio = "",
         breakEndAudio = "",
-        running = settings.running,
+        running = false,
+        links = [],
         sounds = {
             "Jubilation": "jubilation.mp3",
             "Give me your attention": "attention-seeker.mp3",
@@ -29,6 +31,7 @@ $(function() {
 
     $(document).ready(function() {
         //add favicon to html header 
+        var linkValue = new Link({});
         const link = $("<link></link>");
         link[0].type = 'image/x-icon';
         link[0].rel = 'shortcut icon';
@@ -83,7 +86,13 @@ $(function() {
             $(this).addClass("selected");
             setSelectedSettings();
         });
-
+        $("#addLink").on("click",function(e){
+            var title =  $("#linkTitle").val();
+            var link = $("#linkValue").val();
+            if(title !=="" && link !== ""){
+                saveLink(new Link({title:title, link:link,defaultLink:false}));
+            }
+        });
         //show quote author and add twitter sharing action
 
           $(".quote").hover(function(e) {
@@ -160,7 +169,10 @@ $(function() {
         };
         settings = newSettings;
         localStorage.setItem('pomodoroSettings', JSON.stringify(newSettings));
+        links = getLinks();
+        printLinks();
     }
+
 
     function updateStore(option) {
         let oldSettings = JSON.parse(localStorage.getItem('pomodoroSettings')) || {};
@@ -298,6 +310,26 @@ $(function() {
         }, 1000);
     }
 
+    function printLinks(){
+        var content = "<table>";
+        var appendDelete = "";
+           for(var i=0;i < links.length;i++){  
+              if(!links[i].defaultLink){
+                appendDelete = "<td class='deleteLink' data-linkValue='"+JSON.stringify(links[i])+"'> X </td>";
+              }  
+              content +="<tr><td>" +links[i].title+"</td><td><a href='"+links[i].link+"'>"+links[i].link+"</a></td>"+appendDelete+"</tr>";   
+           }
+           content+='</table>';
+        $("#links").empty();
+        $("#links").append(content);
+        $( ".deleteLink").on("click",function(e){
+            var attributeContent = e.currentTarget.getAttribute('data-linkValue')
+            var object = JSON.parse(attributeContent)
+            removeLink(object);
+            links = getLinks();
+            printLinks();
+        });
+    }
 
     function updateTitlePomodoro() {
         const min = minutes.toString().length > 1 ? minutes : "0" + minutes;
