@@ -1,0 +1,30 @@
+.taskTrigger{
+	font-size: 22px;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.62);
+    color: white;
+    padding: 2px;
+}
+.taskWidget{
+	position: fixed;
+    right: 10px;
+    bottom: 40px;
+    background-color: rgba(0, 0, 0, 0.77);
+    height: auto;
+    min-height: 50px;
+    width: 200px;
+}
+#taskName{
+	position: relative;
+    top: 18px;
+    width: 100%;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    height: 30px;
+    color: white;
+    text-align: center;
+}

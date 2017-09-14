@@ -1,4 +1,6 @@
 import  {Link}  from './links.js';
+import  {Task}  from './task.js';
+
 export function saveLink(link){
 	let links = JSON.parse(localStorage.getItem('links')) || [];
 		links.push(link);
@@ -19,6 +21,24 @@ export function getLinks(){
 		addDefaultLinks();
 	}
 	return links;
+}
+
+export function saveTask(task){
+	let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+		tasks.push(task);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+export function completeTask(){
+	let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+	let filteredTasks = tasks.filter(
+			function(t){
+				return !t.completed;
+			});
+    localStorage.setItem('tasks', JSON.stringify(filteredTasks));
+}
+export function getTasks(){
+	let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+	return tasks;
 }
 
 function addDefaultLinks(){
