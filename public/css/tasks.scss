@@ -19,7 +19,7 @@
 }
 #taskName{
 	position: relative;
-    top: 18px;
+    top: 0;
     width: 100%;
     background-color: transparent;
     outline: none;
@@ -27,4 +27,19 @@
     height: 30px;
     color: white;
     text-align: center;
+}
+.tasks{
+	color: white;
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    padding-top: 10px;
+}
+.deleteTask{
+	float: right;
+    padding-right: 10px;
+}
+.strikeText{
+	text-decoration:line-through;
+	color: gray;
 }

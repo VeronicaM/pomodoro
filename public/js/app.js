@@ -1,8 +1,17 @@
 require("../css/app.scss");
 const favIco = require("../favicon.png");
 const blackCat = require("../images/black-cat.png");
-import {Link} from './links.js';
-import {getLinks, removeLink, saveLink} from "./repository.js";
+import { Link } from './links.js';
+import { Task } from './task.js';
+import {
+    getLinks,
+    removeLink,
+    saveLink,
+    saveTask,
+    getTasks,
+    removeTask,
+    completeTask
+} from "./repository.js";
 
 $(function() {
     let settings = localStorage.getItem('pomodoroSettings'),
@@ -18,6 +27,7 @@ $(function() {
         breakEndAudio = "",
         running = false,
         links = [],
+        tasks = [],
         sounds = {
             "Jubilation": "jubilation.mp3",
             "Give me your attention": "attention-seeker.mp3",
@@ -43,7 +53,7 @@ $(function() {
 
         //toggle Celcius/ Farenheit 
 
-           $(".temperature").on("click", function(e) {
+        $(".temperature").on("click", function(e) {
             console.log($(this).text());
             var text = $(this).text();
             if (text.indexOf("C") >= 0) {
@@ -76,6 +86,11 @@ $(function() {
                 $(".quote").toggle();
             }
         });
+        $(".taskTrigger").on("click", function(e) {
+            if (e.target == $(".taskTrigger")[0]) {
+                $(".taskWidget").toggle();
+            }
+        });
         $(".weatherTrigger").on("click", function(e) {
             if (e.target == $(".weatherTrigger")[0]) {
                 $(".weatherWidget").toggle();
@@ -86,16 +101,29 @@ $(function() {
             $(this).addClass("selected");
             setSelectedSettings();
         });
-        $("#addLink").on("click",function(e){
-            var title =  $("#linkTitle").val();
+        $("#addLink").on("click", function(e) {
+            var title = $("#linkTitle").val();
+            $("#linkTitle").val(""); 
             var link = $("#linkValue").val();
-            if(title !=="" && link !== ""){
-                saveLink(new Link({title:title, link:link,defaultLink:false}));
+            $("#linkValue").val("");
+            if (title !== "" && link !== "") {
+                var newLink = new Link({ title: title, link: link, defaultLink: false });
+                saveLink(newLink);
+                var appendDelete = "<td class='deleteLink' data-linkValue='" + JSON.stringify(newLink) + "'> X </td>";
+                var content = "<tr><td>" + title + "</td><td><a href='" + link + "'>" + link + "</a></td>" + appendDelete + "</tr>";
+                $("#links table").append(content);
+                $(".deleteLink").on("click", function(e) {
+                    var attributeContent = e.currentTarget.getAttribute('data-linkValue')
+                    var object = JSON.parse(attributeContent)
+                    removeLink(object);
+                    links = getLinks();
+                    printLinks();
+                });
             }
         });
         //show quote author and add twitter sharing action
 
-          $(".quote").hover(function(e) {
+        $(".quote").hover(function(e) {
             $(".shareQ").addClass("animateQuote");
         });
         $(".quote").mouseleave(function(e) {
@@ -109,6 +137,44 @@ $(function() {
             var twtLink = 'http://twitter.com/home?status=' + encodeURIComponent(textToTweet);
             window.open(twtLink, '_blank');
         });
+        $('#taskName').keypress(function(e) {
+            var key = e.which;
+            if (key == 13) // the enter key code
+            {
+                var newTask = new Task({ "description": e.currentTarget.value, "completed": false });
+                saveTask(newTask);
+                printTask(newTask);
+                e.currentTarget.value = "";
+            }
+        });
+
+        function printTask(task) {
+            var appendDelete = "<span class='deleteTask' data-taskValue='" + JSON.stringify(task) + "'> x </span>";
+            var className = task.completeTask ? "strikeText" : "";
+            var content =  "<label class='"+className+"'><input taskValue='" + JSON.stringify(task) + "' class='taskCheckbox' type ='checkbox' value ='" + task.description + "'> " + task.description +  appendDelete+ "</label>" ;
+            $('.tasks').append(content);
+
+            $(".deleteTask").on("click", function(e) {
+                var attributeContent = e.currentTarget.getAttribute('data-taskValue')
+                var object = JSON.parse(attributeContent)
+                removeTask(object);
+                tasks = getTasks();
+                printTasks();
+            });
+            $(".taskCheckbox").change(function(e) {
+                var attributeContent = e.currentTarget.getAttribute('taskValue');
+                var object = JSON.parse(attributeContent);
+                if(this.checked) {
+                    this.parentElement.className = "strikeText";
+                    object.completed = true;
+                }
+                else{
+                   this.parentElement.className = "";   
+                   object.completed = false;
+                }
+                completeTask(object);
+            });
+        }
 
         //click Listener for Pomodoro button 
         $("#start").on("click", function(e) {
@@ -137,10 +203,10 @@ $(function() {
                 minutes--;
                 elapseTime();
             }
-             storeCurrentTime(minutes, seconds, running, isBreak);
+            storeCurrentTime(minutes, seconds, running, isBreak);
         });
 
-     
+
         $(".timerSetting").change(function(e) {
             let newOption = {},
                 key = this.id,
@@ -152,7 +218,7 @@ $(function() {
             updateStore(newOption);
             initializeValues();
         });
-      
+
     });
 
     function loadStore() {
@@ -170,7 +236,9 @@ $(function() {
         settings = newSettings;
         localStorage.setItem('pomodoroSettings', JSON.stringify(newSettings));
         links = getLinks();
+        tasks = getTasks();
         printLinks();
+        printTasks();
     }
 
 
@@ -289,7 +357,7 @@ $(function() {
                     seconds = 59;
                     setTimeSeconds(seconds);
                 } else {
-                   clearInterval(pomodoroId);
+                    clearInterval(pomodoroId);
                     if (!isBreak) {
                         $("#start").text("Break");
                         notifySessionEnd(pomodoroEndMsg, pomodoroEndAudio, "Break time");
@@ -310,25 +378,68 @@ $(function() {
         }, 1000);
     }
 
-    function printLinks(){
+    function printLinks() {
         var content = "<table>";
         var appendDelete = "";
-           for(var i=0;i < links.length;i++){  
-              if(!links[i].defaultLink){
-                appendDelete = "<td class='deleteLink' data-linkValue='"+JSON.stringify(links[i])+"'> X </td>";
-              }  
-              content +="<tr><td>" +links[i].title+"</td><td><a href='"+links[i].link+"'>"+links[i].link+"</a></td>"+appendDelete+"</tr>";   
-           }
-           content+='</table>';
+        for (var i = 0; i < links.length; i++) {
+            if (!links[i].defaultLink) {
+                appendDelete = "<td class='deleteLink' data-linkValue='" + JSON.stringify(links[i]) + "'> X </td>";
+            }
+            content += "<tr><td>" + links[i].title + "</td><td><a href='" + links[i].link + "'>" + links[i].link + "</a></td>" + appendDelete + "</tr>";
+        }
+        content += '</table>';
         $("#links").empty();
         $("#links").append(content);
-        $( ".deleteLink").on("click",function(e){
+        $(".deleteLink").on("click", function(e) {
             var attributeContent = e.currentTarget.getAttribute('data-linkValue')
             var object = JSON.parse(attributeContent)
             removeLink(object);
             links = getLinks();
             printLinks();
         });
+    }
+
+    function printTasks() {
+        var content = "";
+        var appendDelete = "";
+        var className = "";
+        var checked = "";
+        for (var i = 0; i < tasks.length; i++) {
+            appendDelete = "<span class='deleteTask' data-taskValue='" + JSON.stringify(tasks[i]) + "'> x </span>";
+            if(tasks[i].completed){
+                className = "strikeText";
+                checked = "checked";
+            }
+            content += "<label class='"+className+"'><input taskValue='" + JSON.stringify(tasks[i]) + "' class='taskCheckbox' type ='checkbox' "+checked+" value ='" + tasks[i].description + "'> " + tasks[i].description +  appendDelete+ "</label>" ;
+            className = "";
+            checked = "";
+        }
+
+        $('.tasks').empty();
+        $('.tasks').append(content);
+        $(".deleteTask").on("click", function(e) {
+            var attributeContent = e.currentTarget.getAttribute('data-taskValue');
+            var object = JSON.parse(attributeContent);
+            removeTask(object);
+            tasks = getTasks();
+            printTasks();
+        });
+        $(".taskCheckbox").change(function(e) {
+            var attributeContent = e.currentTarget.getAttribute('taskValue');
+            var object = JSON.parse(attributeContent);
+           
+           
+            if(this.checked) {
+                this.parentElement.className = "strikeText";
+                 object.completed = true;
+            }
+            else{
+               this.parentElement.className = ""; 
+                object.completed = false;  
+            }
+             completeTask(object);
+        });
+
     }
 
     function updateTitlePomodoro() {
@@ -355,7 +466,7 @@ $(function() {
 
     function getLocation() {
         $.get("https://ipinfo.io", function(data) {
-            //	console.log('location data',data);
+            //  console.log('location data',data);
             location.lat = data.loc.split(",")[0];
             location.lon = data.loc.split(",")[1];
             location.city = data.city;
