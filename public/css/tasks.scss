@@ -29,11 +29,13 @@
     text-align: center;
 }
 .tasks{
-	color: white;
+    color: white;
     display: flex;
     flex-direction: column;
     margin-left: 10px;
     padding-top: 10px;
+    overflow-y: auto;
+    max-height: 500px;
 }
 .deleteTask{
 	float: right;
