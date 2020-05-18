@@ -6,17 +6,20 @@ export function saveLink(link) {
     links.push(link);
     localStorage.setItem('links', JSON.stringify(links));
 }
+
 export function removeLink(link) {
     let links = JSON.parse(localStorage.getItem('links')) || [];
     let filteredLinks = links.filter(
-        function(l) {
+        function (l) {
             return (l.title !== link.title ||
                 l.link !== link.link)
         });
     localStorage.setItem('links', JSON.stringify(filteredLinks));
 }
+
 export function getLinks() {
     let links = JSON.parse(localStorage.getItem('links')) || [];
+
     if (links.length === 0) {
         links.push(new Link({
             title: "CodeWars",
@@ -33,8 +36,9 @@ export function getLinks() {
             link: 'https://www.freecodecamp.org',
             defaultLink: true
         }));
-       localStorage.setItem('links', JSON.stringify(links));
+        localStorage.setItem('links', JSON.stringify(links));
     }
+
     return links;
 }
 
@@ -43,25 +47,28 @@ export function saveTask(task) {
     tasks.push(task);
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
+
 export function removeTask(task) {
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    let filteredTasks = tasks.filter(function(t) {
+    let filteredTasks = tasks.filter(function (t) {
         return t.description !== task.description;
     });
     localStorage.setItem('tasks', JSON.stringify(filteredTasks));
 }
+
 export function completeTask(task) {
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     let index = -1;
-    tasks.forEach(function(t,i) {
-        if(t.description == task.description){
-        	index = i;
-        	return;
+    tasks.forEach(function (t, i) {
+        if (t.description == task.description) {
+            index = i;
+            return;
         }
     });
     tasks[index] = task;
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
+
 export function getTasks() {
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     return tasks;

@@ -9,9 +9,6 @@
     height: 60px;
     cursor: pointer;
     @extend .noselection;
-    &:hover {
-        // animation:rotateCog 0.3s linear 1 alternate;
-    }
     cursor: pointer;
 }
 
@@ -30,14 +27,6 @@
     position: relative;
     bottom: 53px;
     border-radius: 0 0 20px 20px;
-    // &:before{
-    //    content:"◂";
-    //    transform: rotate(-90deg);
-    //    display: inline-block;
-    //    font-size: 40px;
-    //    margin: -13px 0 0 -14px;
-    //    color: black;
-    // }
 }
 
 .close {
@@ -57,7 +46,6 @@
 .menu {
     display: none;
     position: relative;
-    // bottom: 370px;
     font-size: 19px;
     background-color: rgba(0, 0, 0, 0.85);
     height: 192px;
@@ -86,8 +74,10 @@
     text-align: left;
     margin: 0 30px 0 15px;
     color: $settings-color;
+
     div {
         padding-bottom: 10px;
+
         &:after {
             content: "";
             display: block;
@@ -95,6 +85,7 @@
             width: 100%;
             background: rgba(255, 255, 255, 0.35);
         }
+
         &:hover {
             color: white;
             cursor: pointer;
@@ -104,10 +95,12 @@
 
 .settings-options {
     margin-left: 20px;
-    &>div {
+
+    & > div {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+
         div {
             display: flex;
             justify-content: space-between;
@@ -115,24 +108,29 @@
             width: 100%;
             padding-bottom: 10px;
         }
+
         select {
             width: 52%;
         }
     }
 }
+
 #links table {
-    color:white;
+    color: white;
     cursor: default;
-    a{  
-        padding-left:10px;
-        color:rgb(188, 247, 255);
+
+    a {
+        padding-left: 10px;
+        color: rgb(188, 247, 255);
         text-decoration: none;
-        &:hover{
+
+        &:hover {
             text-decoration: underline;
         }
     }
 }
-#LinkSO{
+
+#LinkSO {
     overflow-y: scroll;
     position: relative;
     top: -24px;
@@ -140,13 +138,16 @@
     padding: 7px;
     height: 144px;
 }
-.addLink{
+
+.addLink {
     display: flex;
     flex-direction: column !important;
 }
-.deleteLink{
+
+.deleteLink {
     cursor: pointer;
 }
+
 @keyframes rotateCog {
     0% {
         transform: rotate(0deg);

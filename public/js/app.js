@@ -13,7 +13,7 @@ import {
     completeTask
 } from "./repository.js";
 
-$(function() {
+$(function () {
     let settings = localStorage.getItem('pomodoroSettings'),
         location = {},
         unit = "metric",
@@ -39,7 +39,7 @@ $(function() {
         },
         soundsNames = swap(sounds);
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         //add favicon to html header 
         var linkValue = new Link({});
         const link = $("<link></link>");
@@ -53,8 +53,7 @@ $(function() {
 
         //toggle Celcius/ Farenheit 
 
-        $(".temperature").on("click", function(e) {
-            console.log($(this).text());
+        $(".temperature").on("click", function (e) {
             var text = $(this).text();
             if (text.indexOf("C") >= 0) {
                 text = text.replace("C", "F");
@@ -69,41 +68,42 @@ $(function() {
         });
 
         //add clickListeners for gadgets
-        $("#closeQuote").on("click", function(e) {
+        $("#closeQuote").on("click", function (e) {
             $(".quote").hide();
         });
-        $("#closeWeather").on("click", function(e) {
+
+        $("#closeWeather").on("click", function (e) {
             $(".weatherWidget").hide();
         });
 
-        $(".settings").on("click", function(e) {
+        $(".settings").on("click", function (e) {
             if (e.target == $(".settings")[0]) {
                 $(".menu").toggle();
             }
         });
-        $(".quoteTrigger").on("click", function(e) {
+        $(".quoteTrigger").on("click", function (e) {
             if (e.target == $(".quoteTrigger")[0]) {
                 $(".quote").toggle();
             }
         });
-        $(".taskTrigger").on("click", function(e) {
+        $(".taskTrigger").on("click", function (e) {
             if (e.target == $(".taskTrigger")[0]) {
                 $(".taskWidget").toggle();
             }
         });
-        $(".weatherTrigger").on("click", function(e) {
+        $(".weatherTrigger").on("click", function (e) {
             if (e.target == $(".weatherTrigger")[0]) {
                 $(".weatherWidget").toggle();
             }
         });
-        $(".settings-list div").on("click", function(e) {
+        $(".settings-list div").on("click", function (e) {
             $(".settings-list div").removeClass("selected");
             $(this).addClass("selected");
             setSelectedSettings();
         });
-        $("#addLink").on("click", function(e) {
+        $("#addLink").on("click", function (e) {
             var title = $("#linkTitle").val();
-            $("#linkTitle").val(""); 
+            $("#linkTitle").val("");
             var link = $("#linkValue").val();
             $("#linkValue").val("");
             if (title !== "" && link !== "") {
@@ -112,7 +112,7 @@ $(function() {
                 var appendDelete = "<td class='deleteLink' data-linkValue='" + JSON.stringify(newLink) + "'> X </td>";
                 var content = "<tr><td>" + title + "</td><td><a href='" + link + "'>" + link + "</a></td>" + appendDelete + "</tr>";
                 $("#links table").append(content);
-                $(".deleteLink").on("click", function(e) {
+                $(".deleteLink").on("click", function (e) {
                     var attributeContent = e.currentTarget.getAttribute('data-linkValue')
                     var object = JSON.parse(attributeContent)
                     removeLink(object);
@@ -123,13 +123,15 @@ $(function() {
         });
         //show quote author and add twitter sharing action
 
-        $(".quote").hover(function(e) {
+        $(".quote").hover(function (e) {
             $(".shareQ").addClass("animateQuote");
         });
-        $(".quote").mouseleave(function(e) {
+
+        $(".quote").mouseleave(function (e) {
             $(".shareQ").removeClass("animateQuote");
         });
-        $("#twitter").click(function() {
+
+        $("#twitter").click(function () {
             let textToTweet = $(".text").text() + " by " + $(".author").text();
             if (textToTweet.length >= 140) {
                 textToTweet = textToTweet.substring(0, 70) + '... by ' + $(".author").text() + " " + quoteLink;
@@ -137,7 +139,8 @@ $(function() {
             var twtLink = 'http://twitter.com/home?status=' + encodeURIComponent(textToTweet);
             window.open(twtLink, '_blank');
         });
-        $('#taskName').keypress(function(e) {
+
+        $('#taskName').keypress(function (e) {
             var key = e.which;
             if (key == 13) // the enter key code
             {
@@ -151,34 +154,36 @@ $(function() {
         function printTask(task) {
             var appendDelete = "<span class='deleteTask' data-taskValue='" + JSON.stringify(task) + "'> x </span>";
             var className = task.completeTask ? "strikeText" : "";
-            var content =  "<label class='"+className+"'><input taskValue='" + JSON.stringify(task) + "' class='taskCheckbox' type ='checkbox' value ='" + task.description + "'> " + task.description +  appendDelete+ "</label>" ;
+            var content = "<label class='" + className + "'><input taskValue='" + JSON.stringify(task) + "' class='taskCheckbox' type ='checkbox' value ='" + task.description + "'> " + task.description + appendDelete + "</label>";
             $('.tasks').append(content);
 
-            $(".deleteTask").on("click", function(e) {
+            $(".deleteTask").on("click", function (e) {
                 var attributeContent = e.currentTarget.getAttribute('data-taskValue')
                 var object = JSON.parse(attributeContent)
                 removeTask(object);
                 tasks = getTasks();
                 printTasks();
             });
-            $(".taskCheckbox").change(function(e) {
+
+            $(".taskCheckbox").change(function (e) {
                 var attributeContent = e.currentTarget.getAttribute('taskValue');
                 var object = JSON.parse(attributeContent);
-                if(this.checked) {
+                if (this.checked) {
                     this.parentElement.className = "strikeText";
                     object.completed = true;
                 }
-                else{
-                   this.parentElement.className = "";   
-                   object.completed = false;
+                else {
+                    this.parentElement.className = "";
+                    object.completed = false;
                 }
                 completeTask(object);
             });
         }
 
         //click Listener for Pomodoro button 
-        $("#start").on("click", function(e) {
+        $("#start").on("click", function (e) {
             const toggle = $(this).text();
+            
             if (toggle == "Start") {
                 $(this).text("Stop");
                 resetPomodoro();
@@ -207,7 +212,7 @@ $(function() {
         });
 
 
-        $(".timerSetting").change(function(e) {
+        $(".timerSetting").change(function (e) {
             let newOption = {},
                 key = this.id,
                 value = "";
@@ -264,7 +269,7 @@ $(function() {
         isBreak = settings.isBreak || false;
         running = settings.running;
         pomodoroEndMsg = "Hey, your pomodoro session of " + settings.countdown + " minutes is over ! Come take a break and cross out your finished tasks !";
-        breakEndMsg = "Hey, your break of " + settings.break+" minutes is over. Do you want to start a new pomodoro ?";
+        breakEndMsg = "Hey, your break of " + settings.break + " minutes is over. Do you want to start a new pomodoro ?";
         var message = isBreak ? "Break time" : "Time until break";
         $('.message').text(message);
         setTimeMinutes(minutes);
@@ -286,13 +291,13 @@ $(function() {
         $("#workSound").val(soundsNames[settings.workSound]);
     }
 
-    $(document).on("mouseup", function(e) {
+    $(document).on("mouseup", function (e) {
         if ($(".menu").is(":visible") && e.target !== $(".settings")[0] && e.target !== $(".menu")[0] && $(".menu").has(e.target).length === 0) {
             $(".menu").hide();
         }
     });
     // request permission on page load
-    window.onload = function() {
+    window.onload = function () {
         loadStore();
         initializeValues();
         if (running) {
@@ -314,13 +319,11 @@ $(function() {
                 body: message,
             });
 
-            notification.addEventListener('click', function(e) {
+            notification.addEventListener('click', function (e) {
                 window.focus();
                 e.target.close();
             }, false);
         }
-
-
     }
 
     function resetPomodoro() {
@@ -349,7 +352,7 @@ $(function() {
     function elapseTime() {
         setTimeMinutes(minutes);
         setTimeSeconds(seconds);
-        pomodoroId = setInterval(function() {
+        pomodoroId = setInterval(function () {
             if (seconds == 0) {
                 if (minutes != 0) {
                     minutes--;
@@ -390,7 +393,7 @@ $(function() {
         content += '</table>';
         $("#links").empty();
         $("#links").append(content);
-        $(".deleteLink").on("click", function(e) {
+        $(".deleteLink").on("click", function (e) {
             var attributeContent = e.currentTarget.getAttribute('data-linkValue')
             var object = JSON.parse(attributeContent)
             removeLink(object);
@@ -406,38 +409,38 @@ $(function() {
         var checked = "";
         for (var i = 0; i < tasks.length; i++) {
             appendDelete = "<span class='deleteTask' data-taskValue='" + JSON.stringify(tasks[i]) + "'> x </span>";
-            if(tasks[i].completed){
+            if (tasks[i].completed) {
                 className = "strikeText";
                 checked = "checked";
             }
-            content += "<label class='"+className+"'><input taskValue='" + JSON.stringify(tasks[i]) + "' class='taskCheckbox' type ='checkbox' "+checked+" value ='" + tasks[i].description + "'> " + tasks[i].description +  appendDelete+ "</label>" ;
+            content += "<label class='" + className + "'><input taskValue='" + JSON.stringify(tasks[i]) + "' class='taskCheckbox' type ='checkbox' " + checked + " value ='" + tasks[i].description + "'> " + tasks[i].description + appendDelete + "</label>";
             className = "";
             checked = "";
         }
 
         $('.tasks').empty();
         $('.tasks').append(content);
-        $(".deleteTask").on("click", function(e) {
+        $(".deleteTask").on("click", function (e) {
             var attributeContent = e.currentTarget.getAttribute('data-taskValue');
             var object = JSON.parse(attributeContent);
             removeTask(object);
             tasks = getTasks();
             printTasks();
         });
-        $(".taskCheckbox").change(function(e) {
+        $(".taskCheckbox").change(function (e) {
             var attributeContent = e.currentTarget.getAttribute('taskValue');
             var object = JSON.parse(attributeContent);
-           
-           
-            if(this.checked) {
+
+
+            if (this.checked) {
                 this.parentElement.className = "strikeText";
-                 object.completed = true;
+                object.completed = true;
             }
-            else{
-               this.parentElement.className = ""; 
-                object.completed = false;  
+            else {
+                this.parentElement.className = "";
+                object.completed = false;
             }
-             completeTask(object);
+            completeTask(object);
         });
 
     }
@@ -457,7 +460,7 @@ $(function() {
     }
 
     function getQuote() {
-        $.getJSON('/quote', function(quote) {
+        $.getJSON('/quote', function (quote) {
             let author = quote.quoteAuthor || "Unknown";
             $(".text").text('" ' + quote.quoteText + ' "');
             $(".author").text(author);
@@ -465,8 +468,7 @@ $(function() {
     }
 
     function getLocation() {
-        $.get("https://ipinfo.io", function(data) {
-            //  console.log('location data',data);
+        $.get("https://ipinfo.io", function (data) {
             location.lat = data.loc.split(",")[0];
             location.lon = data.loc.split(",")[1];
             location.city = data.city;
@@ -478,7 +480,7 @@ $(function() {
 
     function getWeather(query) {
         var data = { "lat": location.lat, "lon": location.lon, "units": unit };
-        $.post('/weather', { "lat": location.lat, "lon": location.lon, "units": unit }).done(function(wResult) {
+        $.post('/weather', { "lat": location.lat, "lon": location.lon, "units": unit }).done(function (wResult) {
             let data = {
                 temp: Math.round(wResult.main.temp),
                 description: wResult.weather[0].description,
