@@ -468,7 +468,7 @@ $(function () {
     }
 
     function getLocation() {
-        $.get("https://ipinfo.io", function (data) {
+        $.get(`https://ipinfo.io?token=${process.env.IP_INFO_TOKEN}`, function (data) {
             location.lat = data.loc.split(",")[0];
             location.lon = data.loc.split(",")[1];
             location.city = data.city;
