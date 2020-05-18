@@ -54,5 +54,8 @@
     "jade-html-loader": "0.0.3",
     "pug": "^2.0.0-rc.3",
     "pug-html-loader": "^1.1.5"
+  },
+  "devDependencies": {
+    "dotenv-webpack": "^1.8.0"
   }
 }
