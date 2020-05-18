@@ -5,9 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": " npm run build && node server.js",
-    "startProduction": "cross-env NODE_ENV=production npm run build node server.js",
-    "startC": "webpack-dev-server -d --watch",
-    "runDev": "cross-env NODE_ENV=development node server.js",
+    "build:run:prod": "cross-env NODE_ENV=production npm run build node server.js",
+    "run:client": "webpack-dev-server -d --watch",
+    "dev": "cross-env NODE_ENV=development node server.js",
     "build": "webpack --config webpack.config.production.js -p"
   },
   "repository": {
