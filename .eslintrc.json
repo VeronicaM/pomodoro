@@ -15,5 +15,7 @@
     "parserOptions": {
         "ecmaVersion": 11
     },
-    "rules": {}
+    "rules": {
+        "import/no-dynamic-require": 0
+    }
 }

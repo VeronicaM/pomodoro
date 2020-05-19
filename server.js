@@ -1,11 +1,12 @@
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
-const routes = require('./routes/index');
 const bodyParser = require('body-parser');
+const favicon = require('serve-favicon');
 
 const port = process.env.PORT || 80;
-const favicon = require('serve-favicon');
+
+const routes = require('./routes/index');
 
 const app = express();
 
@@ -24,10 +25,9 @@ app.use('/', routes);
 // Only load this middleware in dev mode (important).
 
 if (process.env.NODE_ENV === 'development') {
-  const webpackMiddleware = require('webpack-dev-middleware');
-  const webpack = require('webpack');
-
-  const config = require('./webpack.config');
+  const webpackMiddleware = require('webpack-dev-middleware'); // eslint-disable-line global-require
+  const webpack = require('webpack'); // eslint-disable-line global-require
+  const config = require('./webpack.config'); // eslint-disable-line global-require
 
   app.use(
     webpackMiddleware(webpack(config), {
@@ -49,6 +49,6 @@ app.use((req, res, next) => {
   next(err);
 });
 
-const server = app.listen(port, () => {
-  console.log('listening on port ', port);
+app.listen(port, () => {
+  console.log('listening on port ', port); // eslint-disable-line no-console
 });
