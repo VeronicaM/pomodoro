@@ -8,7 +8,10 @@
     "build:run:prod": "NODE_ENV=production npm run build && node server.js",
     "run:client": "webpack-dev-server -d --watch",
     "dev": "NODE_ENV=development node server.js",
-    "build": "webpack --config webpack.config.production.js -p"
+    "build": "webpack --config webpack.config.production.js -p",
+    "format": "prettier --write \"**/*.js\"",
+    "lint": "eslint \"**/*.js\" --fix",
+    "lint:format": "npm run lint && npm run format"
   },
   "repository": {
     "type": "git",
@@ -56,6 +59,9 @@
     "pug-html-loader": "^1.1.5"
   },
   "devDependencies": {
-    "dotenv-webpack": "^1.8.0"
+    "dotenv-webpack": "^1.8.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2"
   }
 }
