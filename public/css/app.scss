@@ -3,10 +3,10 @@
 @import "settings";
 @import "tasks";
 @font-face {
-    font-family: 'Digital-7';
+    font-family: "Digital-7";
     font-style: normal;
     font-weight: 400;
-    src: local('Digital-7'), url('../fonts/digital-7.ttf') format('truetype');
+    src: local("Digital-7"), url("../fonts/digital-7.ttf") format("truetype");
 }
 
 body {
@@ -21,7 +21,7 @@ body {
     padding: 10px;
     &:after {
         content: "";
-        background: url('https://unsplash.it/1400/610?random') no-repeat center center fixed;
+        background: url("https://unsplash.it/1400/610?random") no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -48,10 +48,12 @@ body {
     left: 22%;
     width: 70%;
     z-index: -2;
+
     .text {
         text-align: center;
         padding: 10px 10px 0 10px;
     }
+
     @media screen and (min-width: 600px) {
         left: 28%;
         width: 50%;
@@ -67,6 +69,7 @@ body {
 .shareQ {
     justify-content: center;
     opacity: 0;
+
     div {
         display: flex;
         flex-direction: row;
@@ -82,7 +85,7 @@ body {
 }
 
 #twitter {
-    background-image: url('../images/twitter.svg');
+    background-image: url("../images/twitter.svg");
     height: 18px;
     width: 20px;
     display: inline-block;
@@ -141,15 +144,18 @@ body {
         display: flex;
         flex-direction: column;
         margin-left: 4%;
+
         img {
             width: 100px;
             height: 100px;
         }
     }
+
     .temperature {
         margin-left: 30%;
         font-size: 35px;
     }
+
     .location {
         margin-left: 20%;
         padding: 15px;
@@ -171,6 +177,7 @@ body {
     background-color: rgba(0, 0, 0, 0.75);
     color: rgba(255, 255, 255, 0.7);
     border-radius: 10px;
+
     button {
         padding: 10px;
         box-shadow: 0 0 22px #000 inset;
@@ -179,9 +186,11 @@ body {
         height: 63px;
         font-size: 30px;
         border-radius: 9px;
+
         &:focus {
             outline: 0;
         }
+
         &:hover {
             background-color: $startHBColor;
         }
@@ -194,27 +203,33 @@ time {
     display: flex;
     margin-bottom: 10px;
     display: inline-block;
+
     div {
         display: inline-block;
         width: 69px;
         height: 92px;
+
         & span {
             position: relative;
             top: 10px;
             left: 10px;
             @extend .animateElapsedTime;
         }
-        margin-right:2px;
+
+        margin-right: 2px;
+
         @media screen and (min-width: 600px) {
             width: 80px;
             height: 133px;
             font-size: 126px;
         }
     }
+
     div:nth-of-type(2) span {
         display: inline-block;
         @extend .animateDigit;
     }
+
     div:nth-of-type(3) {
         border: none;
         background-color: transparent;
@@ -222,6 +237,7 @@ time {
         left: 25px;
         top: 15px;
     }
+    
     @media screen and (min-width: 600px) {
         left: 28%;
         top: 41%;
@@ -230,7 +246,7 @@ time {
 }
 
 .mountain {
-    background-image: url('../images/test.jpg');
+    background-image: url("../images/test.jpg");
     height: 400px;
     width: 700px;
     color: white;
@@ -282,7 +298,6 @@ time {
 
 .stopAnimation {
     animation-play-state: paused !important;
-    ;
 }
 
 @keyframes digitAnimation {

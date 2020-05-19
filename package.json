@@ -4,11 +4,14 @@
   "description": "\"# pomodoro\"",
   "main": "server.js",
   "scripts": {
-    "start": " npm run build && node server.js",
-    "startProduction": "cross-env NODE_ENV=production npm run build node server.js",
-    "startC": "webpack-dev-server -d --watch",
-    "runDev": "cross-env NODE_ENV=development node server.js",
-    "build": "webpack --config webpack.config.production.js -p"
+    "start": "npm run build && node server.js",
+    "build:run:prod": "NODE_ENV=production npm run build && node server.js",
+    "run:client": "webpack-dev-server -d --watch",
+    "dev": "NODE_ENV=development node server.js",
+    "build": "webpack --config webpack.config.production.js -p",
+    "format": "prettier --write \"**/*.js\"",
+    "lint": "eslint \"**/*.js\" --fix",
+    "lint:format": "npm run lint && npm run format"
   },
   "repository": {
     "type": "git",
@@ -27,11 +30,10 @@
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-es2015": "^6.22.0",
     "body-parser": "^1.16.1",
-    "cross-env": "^3.1.4",
     "css-loader": "^0.26.1",
     "express": "^4.14.1",
     "extract-text-webpack-plugin": "^2.0.0-rc.3",
-    "file-loader": "^0.10.0",
+    "file-loader": "^0.10.1",
     "html-loader": "^0.4.4",
     "html-webpack-plugin": "^2.30.1",
     "jade": "^1.11.0",
@@ -52,10 +54,14 @@
     "webpack": "^2.2.0-rc.3",
     "webpack-dev-middleware": "^1.10.0",
     "webpack-hot-middleware": "^2.16.1",
-    "file-loader": "^0.10.1",
-    "jade": "^1.11.0",
     "jade-html-loader": "0.0.3",
     "pug": "^2.0.0-rc.3",
     "pug-html-loader": "^1.1.5"
+  },
+  "devDependencies": {
+    "dotenv-webpack": "^1.8.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2"
   }
 }

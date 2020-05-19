@@ -1,11 +1,10 @@
-'use strict';
-export class Task {
-    constructor(data) {
-        this.description = data.description;
-        this.completed = data.completed;
-    }
-    toString() {
-        return this.title + ' ' + this.completed;
-    }
-}
+export default class Task {
+  constructor({ description, completed }) {
+    this.description = description;
+    this.completed = completed;
+  }
 
+  toString() {
+    return `${this.title} ${this.completed}`;
+  }
+}
