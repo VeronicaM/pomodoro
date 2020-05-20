@@ -8,9 +8,9 @@ module.exports = {
   context: path.resolve("public"),
   entry: ["./js/app.js"],
   output: {
-    path: path.resolve('build/'),
-    publicPath: '/',
-    filename: 'bundle.js',
+    path: path.resolve("build/"),
+    publicPath: "/",
+    filename: "bundle.js",
   },
   devServer: {
     contentBase: "public",

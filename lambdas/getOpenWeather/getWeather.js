@@ -28,8 +28,7 @@ exports.handler = async (event) => {
     );
 
     req.on("error", () => {
-      reject({
-        // eslint-disable-line prefer-promise-reject-errors
+      reject({ // eslint-disable-line prefer-promise-reject-errors
         statusCode: 500,
         body: "Something went wrong!",
       });
