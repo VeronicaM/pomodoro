@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === 'development') {
 
   app.use(
     webpackMiddleware(webpack(config), {
-      publicPath: '/public/assets/',
+      publicPath: '/',
 
       headers: { 'X-Custom-Webpack-Header': 'yes' },
 
