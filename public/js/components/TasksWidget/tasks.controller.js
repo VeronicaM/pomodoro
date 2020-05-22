@@ -146,7 +146,7 @@ export default class TasksController {
 
   onTypeTask(e) {
     const key = e.which;
-    if (key === 13) {
+    if (key === 13 && e.currentTarget.value) {
       // the enter key code
       const newTask = new Task({
         description: e.currentTarget.value,
