@@ -23,20 +23,12 @@ html
 			button#start Start
 		div.settings ✽
 			div.menu
-				include ./settings
-		div.quoteTrigger Quote
-		div.quote 
-			div.headlineQ
-				div.close#closeQuote X
-			div.text
-			div.shareQ
-				div
-					div.author
-					a(href="#" id="twitter") 
+				include ../js/components/Settings/settings
+		include ../js/components/Quote/quote
 		div.weatherTrigger Weather			
-		include ./weather-widget
+		include  ../js/components/WeatherWidget/weather-widget
 		div.taskTrigger Todo
-		include ./tasks
+		include  ../js/components/Task/tasks
 		script(src="./bundle.js")
 
 
