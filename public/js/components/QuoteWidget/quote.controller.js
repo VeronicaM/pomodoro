@@ -5,13 +5,13 @@ import { setSource, updateText } from '../../common/utils';
 export default class QuoteController {
     constructor() {
         // elements
-        this.label = $(".text");
-        this.author = $(".author");
+        this.label = $(".quote-widget__text");
+        this.author = $(".quote-widget__author");
         this.closeBtn = $("#closeQuote");
         this.twitterIcon = $("#twitter");
-        this.container = $(".quote");
-        this.containerToggle = $(".quoteTrigger");
-        this.shareContainer = $(".shareQ");
+        this.container = $(".quote-widget");
+        this.containerToggle = $(".quote-widget__trigger");
+        this.shareContainer = $(".quote-widget__shareQ");
 
         this.initView();
     }
