@@ -3,11 +3,12 @@ import Task from './Task';
 export default class TasksController {
   constructor() {
     // elements
-    this.widget = $(".taskWidget");
-    this.widgetToggle = $(".taskTrigger");
-    this.container = $(".tasks");
-    this.deleteIcon = $(".deleteTask");
-    this.checkbox = $(".taskCheckbox");
+    this.widget = $(".tasks-widget");
+    this.widgetToggle = $(".tasks-widget__trigger");
+    this.container = $(".tasks-widget__tasks");
+    this.deleteIconSelector = "tasks-widget__delete";
+    this.checkboxSelector = "tasks-widget__checkbox";
+    this.completeTaskClassName = "strike-text";
     this.taskInput = $("#taskName");
 
     // properties
@@ -56,13 +57,13 @@ export default class TasksController {
   }
 
   generateTaskTemplate(task) {
-    const appendDelete = `<span class='deleteTask' data-taskValue='${JSON.stringify(
+    const appendDelete = `<span class='${this.deleteIconSelector}' data-taskValue='${JSON.stringify(
       task
     )}'> x </span>`;
-    const className = task.completeTask ? "strikeText" : "";
+    const className = task.completeTask ? this.completeTaskClassName : "";
     const content = `<label class='${className}'><input taskValue='${JSON.stringify(
       task
-    )}' class='taskCheckbox' type ='checkbox' value ='${task.description}'> ${
+    )}' class='${this.checkboxSelector}' type ='checkbox' value ='${task.description}'> ${
       task.description
       }${appendDelete}</label>`;
 
@@ -76,8 +77,8 @@ export default class TasksController {
   }
 
   addEventListners() {
-    $(".deleteTask").on("click", this.onDeleteTask.bind(this));
-    $(".taskCheckbox").change(this.onToggleTaskComplete.bind(this));
+    $(`.${this.deleteIconSelector}`).on("click", this.onDeleteTask.bind(this));
+    $(`.${this.checkboxSelector}`).change(this.onToggleTaskComplete.bind(this));
   }
 
   generateTasksTemplate() {
@@ -86,16 +87,16 @@ export default class TasksController {
     let className = "";
     let checked = "";
     for (let i = 0; i < this.tasks.length; i += 1) {
-      appendDelete = `<span class='deleteTask' data-taskValue='${JSON.stringify(
+      appendDelete = `<span class='${this.deleteIconSelector}' data-taskValue='${JSON.stringify(
         this.tasks[i]
       )}'> x </span>`;
       if (this.tasks[i].completed) {
-        className = "strikeText";
+        className = this.completeTaskClassName;
         checked = "checked";
       }
       content += `<label class='${className}'><input taskValue='${JSON.stringify(
         this.tasks[i]
-      )}' class='taskCheckbox' type ='checkbox' ${checked} value ='${
+      )}' class='${this.checkboxSelector}' type ='checkbox' ${checked} value ='${
         this.tasks[i].description
         }'> ${this.tasks[i].description}${appendDelete}</label>`;
       className = "";
@@ -127,7 +128,7 @@ export default class TasksController {
     const object = JSON.parse(attributeContent);
 
     if (e.currentTarget.checked) {
-      e.currentTarget.parentElement.className = "strikeText";
+      e.currentTarget.parentElement.className = this.completeTaskClassName;
       object.completed = true;
     } else {
       e.currentTarget.parentElement.className = "";

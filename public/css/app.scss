@@ -1,11 +1,11 @@
 @import "commons";
 @import "colors";
 @import "settings";
-@import "tasks";
 
 // widgets
 @import "../js/components/WeatherWidget/weather.scss";
 @import "../js/components/QuoteWidget/quote.scss";
+@import "../js/components/TasksWidget/tasks.scss";
 
 @font-face {
     font-family: "Digital-7";
