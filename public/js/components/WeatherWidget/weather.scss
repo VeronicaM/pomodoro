@@ -1,0 +1,36 @@
+.weatherWidget {
+    position: absolute;
+    top: 30px;
+    min-height: 100px;
+    width: 200px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+.weatherIco {
+    height: 50px;
+    width: 50px;
+}
+
+.weatherInfo {
+    .description {
+        display: flex;
+        flex-direction: column;
+        margin-left: 4%;
+
+        img {
+            width: 100px;
+            height: 100px;
+        }
+    }
+
+    .temperature {
+        margin-left: 30%;
+        font-size: 35px;
+    }
+
+    .location {
+        padding: 15px 0;
+        text-align:center;
+    }
+}
