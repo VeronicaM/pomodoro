@@ -7,13 +7,13 @@ import { setSource, updateText } from '../../common/utils';
 export default class WeatherController {
     constructor() {
         // elements
-        this.container = $(".weatherWidget");
-        this.icon = $(".weatherIco");
+        this.container = $(".weather-widget");
+        this.icon = $(".weather-widget__icon");
         this.closeBtn = $("#closeWeather");
-        this.temperature = $(".temperature");
-        this.description = $(".descriptionText");
-        this.locationLabel = $(".location");
-        this.widgetToggle = $(".weatherTrigger");
+        this.temperature = $(".weather-widget__temperature");
+        this.description = $(".weather-widget__text");
+        this.locationLabel = $(".weather-widget__location");
+        this.widgetToggle = $(".weather-widget__trigger");
 
         this.state = {
             units: 'metric'

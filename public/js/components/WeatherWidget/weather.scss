@@ -1,19 +1,22 @@
-.weatherWidget {
+.weather-widget {
     position: absolute;
     top: 30px;
     min-height: 100px;
     width: 200px;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
-}
 
-.weatherIco {
-    height: 50px;
-    width: 50px;
-}
+    &__description {
+        display: flex;
+        align-items: center;
+    }
 
-.weatherInfo {
-    .description {
+    &__icon {
+        height: 50px;
+        width: 50px;
+    }
+
+    &__description {
         display: flex;
         flex-direction: column;
         margin-left: 4%;
@@ -24,13 +27,24 @@
         }
     }
 
-    .temperature {
+    &__temperature {
+        cursor: hand;
         margin-left: 30%;
         font-size: 35px;
     }
 
-    .location {
+    &__location {
         padding: 15px 0;
-        text-align:center;
+        text-align: center;
+    }
+
+    &__trigger {
+        font-size: 22px;
+        position: absolute;
+        top: 0;
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, 0.62);
+        color: white;
+        padding: 2px;
     }
 }
