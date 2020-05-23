@@ -8,24 +8,10 @@ html
 		meta(content="en-us" http-equiv="Content-Language")
 		meta(name="viewport" content="width=device-width, initial-scale=1.0")
 		
-     
 	body
-		- let x = 4;
-		div#timer
-			div.message Time until break
-			time.noselection
-				- for (var i=0; i<x; i++) {
-					if(i%2==0 && i!==0)
-						div=":"
-					div
-						span= "0"
-				-}
-			button#start Start
-
+		include ../js/components/ClockWidget/clock
 		include ../js/components/SettingsWidget/settings
 		include ../js/components/QuoteWidget/quote
 		include  ../js/components/WeatherWidget/weather-widget
 		include  ../js/components/TasksWidget/tasks
 		script(src="./bundle.js")
-
-

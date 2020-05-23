@@ -3,6 +3,7 @@ import QuoteController from "./components/QuoteWidget/quote.controller";
 import TasksController from "./components/TasksWidget/tasks.controller";
 import SettingsController from "./components/SettingsWidget/settings.controller";
 import WeatherController from "./components/WeatherWidget/weather.controller";
+import ClockWidget from "./components/ClockWidget/clock.controller";
 
 export default class MainController {
     constructor() {
@@ -11,5 +12,6 @@ export default class MainController {
         this.settingsController = new SettingsController();
         this.tasksController = new TasksController();
         this.weatherController = new WeatherController();
+        this.clockWidget = new ClockWidget();
     }
 }

@@ -28,15 +28,12 @@ export default class TimerController {
     }
 
     initView() {
-        this.settings = this.getSettings();
+        this.settings = TimerController.getSettings();
 
         this.renderSettings();
 
         // add event listeners
         this.settingsOption.change(this.onSettingsChange.bind(this));
-
-        // TODO dispatch event session has begun with countdown
-        
     }
 
     updateState(newState) {
@@ -50,14 +47,18 @@ export default class TimerController {
         this.workSound.val(this.soundNames[this.settings['work-sound']]);
     }
 
-    getSettings() {
+    static getSettings() {
         const storedSettings = JSON.parse(localStorage.getItem("pomodoroSettings")) || {};
 
         const settings = {
             'break-minutes': storedSettings['break-minutes'] || "5",
             countdown: storedSettings['countdown'] || "25",
             'break-sound': storedSettings['break-sound'] || "good-morning.mp3",
-            'work-sound': storedSettings['work-sound'] || "attention-seeker.mp3"
+            'work-sound': storedSettings['work-sound'] || "attention-seeker.mp3",
+            minutes: storedSettings["minutes"] || storedSettings['countdown'] || "25",
+            seconds: storedSettings['seconds'] || 59,
+            running: storedSettings['running'] || false,
+            isBreak: storedSettings['isBreak'] || false
         };
 
         localStorage.setItem("pomodoroSettings", JSON.stringify(settings));
@@ -65,8 +66,9 @@ export default class TimerController {
         return settings;
     }
 
-    updateSettings(option) {
-        const updatedSettings = { ...this.settings, ...option };
+    static updateSettings(option) {
+        const settings = JSON.parse(localStorage.getItem("pomodoroSettings") || {});
+        const updatedSettings = Object.assign({}, settings, option);
         localStorage.setItem("pomodoroSettings", JSON.stringify(updatedSettings));
         this.settings = updatedSettings;
     }
@@ -84,6 +86,6 @@ export default class TimerController {
         }
 
         newOption[key] = value;
-        this.updateSettings(newOption);
+        TimerController.updateSettings(newOption);
     }
 }

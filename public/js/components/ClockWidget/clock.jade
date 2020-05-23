@@ -1,0 +1,11 @@
+- let x = 4;
+    div#timer
+        div.message Time until break
+        time.noselection
+            - for (var i=0; i<x; i++) {
+                if(i%2==0 && i!==0)
+                    div=":"
+                div
+                    span= "0"
+            -}
+        button#start Start

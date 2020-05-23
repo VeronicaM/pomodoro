@@ -1,0 +1,257 @@
+// helpers
+import { updateText } from '../../common/utils';
+import TimerController from '../SettingsWidget/TimerSection/timer.controller';
+
+// constants
+const blackCat = require("../../../images/black-cat.png");
+
+export default class ClockController {
+    constructor() {
+        // digits
+        this.minutesFirstDigit = $("time div:nth-of-type(1) span");
+        this.minutesSecondDigit = $("time div:nth-of-type(2) span");
+        this.secondsFirstDigit = $("time div:nth-of-type(4) span");
+        this.secondsSecondDigit = $("time div:nth-of-type(5) span");
+
+        // text 
+        this.messageContainer = $(".message");
+        this.statusBarTitle = $("title");
+
+        // buttons
+        this.cta = $("#start");
+
+        // state
+        this.settings = TimerController.getSettings();
+
+        this.config = {
+            endMsg: `Hey, your pomodoro session of ${this.settings.countdown} minutes is over! Come take a break and cross out your finished tasks!`,
+            breakEndMsg: `Hey, your break of ${this.settings.break} minutes is over. Do you want to start a new pomodoro ?`,
+            breakAudio: require(`file-loader!../../../audio/${this.settings['work-sound']}`), // eslint-disable-line global-require
+            endAudio: require(`file-loader!../../../audio/${this.settings['break-sound']}`), // eslint-disable-line global-require
+            breakCTA: 'Take Break',
+            breakMsg: 'Work hard! Focus! Time left in the session:',
+            title: 'Pomodoro',
+            breakOnMsg: 'Enjoy your break! You deserve it :)!',
+            breakOverMsg: 'Break is over!',
+            startCTA: 'Start'
+        };
+
+        const startSeconds = 59;
+
+        this.state = {
+            isBreak: false,
+            minutes: this.settings.running ? this.settings.minutes : this.settings.countdown || 25,
+            seconds: this.settings.running ? this.settings.seconds : startSeconds,
+            running: this.settings.running
+        };
+
+        this.initView();
+    }
+
+    initView() {
+        // add event listener
+        this.cta.on("click", this.handleSession.bind(this));
+
+        if (this.state.running) {
+            this.elapseTime();
+            updateText(this.cta, "Stop");
+        }
+
+        this.updateTimeDisplay(this.state.minutes, this.state.seconds);
+        this.updateCurrentTime();
+
+        if (Notification.permission !== "granted") {
+            Notification.requestPermission();
+        }
+    }
+
+    updateState(newState) {
+        this.state = { ...this.state, ...newState };
+    }
+
+    getTimeDigits(time) {
+        const timeString = time.toString();
+        return timeString.length > 1 ? timeString.split("") : `0${timeString}`.split("");
+    }
+
+    updateDigitsDisplay(time, type) {
+        const digits = this.getTimeDigits(time);
+        const [firstDigit, secondDigit] = digits;
+
+        updateText(type === 'm' ? this.minutesFirstDigit : this.secondsFirstDigit, firstDigit);
+        updateText(type === 'm' ? this.minutesSecondDigit : this.secondsSecondDigit, secondDigit);
+    }
+
+    updateTimeDisplay(minutes, seconds) {
+        const displaySeconds = seconds === 59 && this.state.minutes === this.settings.countdown && !this.state.running ? 0 : seconds;
+        this.updateDigitsDisplay(minutes, 'm');
+        this.updateDigitsDisplay(displaySeconds, 's');
+    }
+
+    displayBreakMsg() {
+        updateText(this.messageContainer, this.config.breakMsg);
+        updateText(this.statusBarTitle, this.config.title);
+    }
+
+    notifySessionEnd(message, audioN, title) {
+        const audio = new Audio(audioN);
+        audio.play();
+        if (Notification.permission === "granted") {
+            const notification = new Notification(title, {
+                icon: blackCat,
+                body: message,
+            });
+
+            notification.addEventListener(
+                "click",
+                (e) => {
+                    window.focus();
+                    e.target.close();
+                },
+                false
+            );
+        }
+    }
+
+    updateCurrentTime(newState) {
+        this.updateState(newState);
+        TimerController.updateSettings(newState);
+    }
+
+    elapseTime() {
+
+        this.pomodoroInterval = setInterval(() => {
+            if (this.state.seconds === 0) {
+                if (this.state.minutes !== 0) {
+                    this.handleElapseMinutes();
+                } else {
+                    this.handleSessionEnd();
+                }
+            } else {
+                this.handleElapseSeconds();
+            }
+        }, 1000);
+    }
+
+    handleElapseSeconds() {
+        const updatedMinutes = this.state.minutes === this.settings.countdown && this.state.seconds === 59 ? this.state.minutes - 1 : this.state.minutes;
+
+        this.updateCurrentTime({
+            seconds: this.state.seconds - 1,
+            minutes: updatedMinutes
+        });
+
+        this.updateTimeDisplay(updatedMinutes, this.state.seconds);
+
+        this.updateTitlePomodoro(this.state.minutes, this.state.seconds);
+    };
+
+    handleElapseMinutes() {
+        this.updateCurrentTime({
+            minutes: this.state.minutes - 1,
+            seconds: startSeconds
+        });
+
+        this.updateTimeDisplay(this.state.minutes, startSeconds);
+
+        this.updateTitlePomodoro(this.state.minutes, this.state.seconds);
+    };
+
+    handleBreakEnd() {
+        this.resetPomodoro();
+        this.notifySessionEnd(this.config.breakEndMsg, this.config.breakEndAudio, this.config.breakOverMsg);
+
+        updateText(this.cta, this.config.startCTA);
+
+        this.updateCurrentTime({
+            isBreak: false
+        });
+    };
+
+    handleSessionEnd() {
+        clearInterval(this.pomodoroInterval);
+        if (!this.state.isBreak) {
+            updateText(this.cta, this.config.breakCTA);
+            this.notifySessionEnd(this.config.endMsg, this.config.endAudio, this.config.breakOnMsg);
+
+            this.updateCurrentTime({
+                seconds: this.state.break - 1,
+                minutes: updatedMinutes
+            });
+
+        } else {
+            this.handleBreakEnd();
+        }
+    }
+
+    resetPomodoro() {
+        clearInterval(this.pomodoroInterval);
+        this.displayBreakMsg();
+
+        TimerController.updateSettings({
+            minutes: this.settings.countdown,
+            seconds: startSeconds
+        });
+
+        this.updateTimeDisplay(this.settings.countdown, 0);
+    }
+
+    updateTitlePomodoro(minutes, seconds) {
+        const min = String(minutes).length > 1 ? minutes : `0${minutes}`;
+        const sec = String(seconds).length > 1 ? seconds : `0${seconds}`;
+
+        const sessionCurrentTime = `${min}:${sec} Pomodoro`;
+        updateText(this.statusBarTitle, sessionCurrentTime);
+    }
+
+    handleBreakStart(e) {
+        this.resetPomodoro();
+        updateText(this.cta, "Stop");
+        updateText(this.messageContainer, this.config.breakOnMsg);
+
+        this.updateCurrentTime({
+            isBreak: true,
+            running: true,
+            minutes: parseInt(this.settings['break-minutes']) - 1
+        });
+
+        this.elapseTime();
+    }
+
+    handleSessionStart() {
+        updateText(this.cta, "Stop");
+        this.resetPomodoro();
+
+        this.updateCurrentTime({
+            running: true,
+            minutes: this.state.minutes - 1
+        });
+
+        this.elapseTime();
+    }
+
+    handleAnySessionEnd() {
+        const stopTimer = confirm("Are you sure you want to stop the timer ?"); // eslint-disable-line no-restricted-globals, no-alert
+        if (stopTimer) {
+            updateText(this.cta, "Start");
+            this.resetPomodoro();
+        }
+
+        this.updateCurrentTime({
+            running: false,
+            isBreak: false
+        });
+    }
+
+    handleSession() {
+        const toggle = this.cta.text();
+
+        if (toggle === "Start") {
+            this.handleSessionStart();
+        } else if (toggle === "Stop") {
+            this.handleAnySessionEnd();
+        } else if (toggle === "Break") {
+            this.handleBreakStart();
+        }
+    }
+}
