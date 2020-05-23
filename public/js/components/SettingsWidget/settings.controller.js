@@ -16,6 +16,7 @@ export default class SettingsController {
         // add event listeners
         this.container.on("click", this.onContainerToggle.bind(this));
         this.optionNames.on("click", this.onSelectSettings.bind(this));
+        $(document).on("mouseup", this.onClickOutside.bind(this));
     }
 
     onContainerToggle(e) {
@@ -36,7 +37,18 @@ export default class SettingsController {
 
         // set current view as selected
         $(e.currentTarget).addClass("selected");
-        
+
         this.displaySelectedSettings(e.currentTarget.id);
+    }
+
+    onClickOutside(e) {
+        if (
+            this.menuContainer.is(":visible") &&
+            e.target !== this.container[0] &&
+            e.target !== this.menuContainer[0] &&
+            this.menuContainer.has(e.target).length === 0
+        ) {
+            this.menuContainer.hide();
+        }
     }
 }
