@@ -22,32 +22,32 @@ export default class TimerController {
         this.settingsOption = $(".settings-widget-timer__option");
 
         // state
-        this.soundNames = {
-            Jubilation: "jubilation.mp3",
-            "Give me your attention": "attention-seeker.mp3",
-            "Good Morning": "good-morning.mp3",
-            Chime: "long-chime-sound.mp3",
-            "Hey you": "obey.mp3",
-            Solemn: "solemn.mp3",
-            "Tic Tac": "oringz-w435.mp3",
-        };
+        this.soundNames = swap(sounds);
 
+        this.initView();
+    }
+
+    initView() {
         this.settings = this.getSettings();
+
+        this.renderSettings();
 
         // add event listeners
         this.settingsOption.change(this.onSettingsChange.bind(this));
+
+        // TODO dispatch event session has begun with countdown
+        
     }
 
     updateState(newState) {
         this.state = { ...this.state, newState };
     }
 
-    initSettings() {
-        const { countdown, breakValue, breakSound, workSound } = this.settings;
-        this.pomodoroSessionTime.val(countdown);
-        this.breakTime.val(breakValue);
-        this.breakSound.val(this.soundsNames[breakSound]);
-        this.workSound.val(this.soundsNames[workSound]);
+    renderSettings() {
+        this.pomodoroSessionTime.val(this.settings['countdown']);
+        this.breakTime.val(this.settings['break-minutes']);
+        this.breakSound.val(this.soundNames[this.settings['break-sound']]);
+        this.workSound.val(this.soundNames[this.settings['work-sound']]);
     }
 
     getSettings() {
@@ -66,8 +66,7 @@ export default class TimerController {
     }
 
     updateSettings(option) {
-        const storedSettings = JSON.parse(localStorage.getItem("pomodoroSettings")) || {};
-        const updatedSettings = { ...storedSettings, ...option };
+        const updatedSettings = { ...this.settings, ...option };
         localStorage.setItem("pomodoroSettings", JSON.stringify(updatedSettings));
         this.settings = updatedSettings;
     }
@@ -79,7 +78,7 @@ export default class TimerController {
         const key = getCleanId(e.currentTarget.getAttribute('id'));
         let value = "";
         if (key.indexOf("sound") > 0) {
-            value = this.soundNames[e.currentTarget.value];
+            value = sounds[e.currentTarget.value];
         } else {
             value = e.currentTarget.value;
         }
