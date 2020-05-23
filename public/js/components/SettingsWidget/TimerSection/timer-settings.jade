@@ -1,0 +1,30 @@
+- let sounds = ["Jubilation","Give me your attention","Good Morning","Chime","Hey you","Solemn","Tic Tac"];
+div.settings-widget__section.selected#timerSO
+	div
+		span Work time
+		select.timerSetting#countdown
+			- for (let i=5; i<=50; i+=10) {
+				option(value="#{i}") #{i} minutes
+			-}
+	div
+		span Break time
+		select.timerSetting#breakMinutes
+			- for (let i=1; i<=20; i++) {
+				if(i===1)
+					option(value="#{i}") #{i} minute
+				else
+					option(value="#{i}")  #{i} minutes
+			-}
+	div
+		span Break time alarm
+		select.timerSetting#breakSound
+			- for (let i=0; i<sounds.length; i++) {
+				option(value="#{sounds[i]}") #{sounds[i]}
+			-}
+	div
+		span Work time time
+		select.timerSetting#workSound
+			- for (let i=0; i<sounds.length; i++) {
+				option(value="#{sounds[i]}") #{sounds[i]}
+			-}
+			
