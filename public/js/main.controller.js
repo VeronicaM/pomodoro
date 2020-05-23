@@ -1,9 +1,7 @@
 // Views Controller
-import LinksController from "./components/Link/links.controller";
 import QuoteController from "./components/QuoteWidget/quote.controller";
 import TasksController from "./components/TasksWidget/tasks.controller";
-import SettingsController from "./components/Settings/settings.controller";
-import TimerController from "./components/Timer/timer.controller";
+import SettingsController from "./components/SettingsWidget/settings.controller";
 import WeatherController from "./components/WeatherWidget/weather.controller";
 
 export default class MainController {

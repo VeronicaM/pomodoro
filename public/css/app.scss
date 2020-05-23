@@ -1,11 +1,11 @@
 @import "commons";
 @import "colors";
-@import "settings";
 
 // widgets
 @import "../js/components/WeatherWidget/weather.scss";
 @import "../js/components/QuoteWidget/quote.scss";
 @import "../js/components/TasksWidget/tasks.scss";
+@import "../js/components/SettingsWidget/settings.scss";
 
 @font-face {
     font-family: "Digital-7";
@@ -19,7 +19,7 @@ body {
     align-items: center;
     background-size: cover;
     overflow: hidden;
-    height: 97%;
+    height: 100vh;
     position: relative;
     z-index: -3;
     margin: 0;
