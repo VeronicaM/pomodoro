@@ -42,7 +42,7 @@ export default class QuoteController {
 
     displayQuote({ text, author }) {
         updateText(this.label, `" ${text} "`);
-        updateText(this.author, `" ${author} "`);
+        updateText(this.author, author);
     }
 
     addEventListeners() {

@@ -44,7 +44,7 @@ export default class LinksController {
       })
     ];
 
-    let links = JSON.parse(localStorage.getItem("links") || []);
+    let links = JSON.parse(localStorage.getItem("links")) || [];
 
     if (!links.length) {
       links = defaultLinks;
