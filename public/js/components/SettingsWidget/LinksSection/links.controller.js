@@ -4,12 +4,12 @@ export default class LinksController {
 
   constructor() {
     // view elements
-    this.container = $("#links");
-    this.listSelector = "#links table";
-    this.deleteIconSelector = "deleteLink";
-    this.addBtn = $("#addLink");
-    this.titleInput = $("#linkTitle");
-    this.valueInput = $("#linkValue");
+    this.container = $("#js-links");
+    this.listSelector = "#js-links table";
+    this.deleteIconSelector = "settings-widget-links__delete";
+    this.addBtn = $("#js-add-Link-btn");
+    this.titleInput = $("#js-link-title");
+    this.valueInput = $("#js-link-value");
 
     // props
     this.links = [];

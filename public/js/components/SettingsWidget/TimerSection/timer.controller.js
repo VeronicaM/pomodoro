@@ -15,11 +15,11 @@ const sounds = {
 export default class TimerController {
     constructor() {
         // settings options
-        this.pomodoroSessionTime = $("#countdown");
-        this.breakTime = $("#breakMinutes");
-        this.breakSound = $("#breakSound");
-        this.workSound = $("#workSound");
-        this.timerSetting = $(".timerSetting");
+        this.pomodoroSessionTime = $("#js-countdown");
+        this.breakTime = $("#js-break-minutes");
+        this.breakSound = $("#js-break-sound");
+        this.workSound = $("#js-work-sound");
+        this.settingsOption = $(".settings-widget-timer__option");
 
         // state
         this.soundNames = {
@@ -35,7 +35,7 @@ export default class TimerController {
         this.settings = this.getSettings();
 
         // add event listeners
-        this.timerSetting.change(this.onSettingsChange.bind(this));
+        this.settingsOption.change(this.onSettingsChange.bind(this));
     }
 
     updateState(newState) {
@@ -53,26 +53,11 @@ export default class TimerController {
     getSettings() {
         const storedSettings = JSON.parse(localStorage.getItem("pomodoroSettings")) || {};
 
-        const {
-            breakMinutes,
-            countdown,
-            breakSound,
-            workSound,
-            running,
-            minutes,
-            seconds,
-            isBreak
-        } = storedSettings;
-
         const settings = {
-            breakMinutes: breakMinutes || "5",
-            countdown: countdown || "25",
-            breakSound: breakSound || "good-morning.mp3",
-            workSound: workSound || "attention-seeker.mp3",
-            running: running || false,
-            minutes: minutes || countdown || "25",
-            seconds: seconds || "00",
-            isBreak: isBreak || false,
+            'break-minutes': storedSettings['break-minutes'] || "5",
+            countdown: storedSettings['countdown'] || "25",
+            'break-sound': storedSettings['break-sound'] || "good-morning.mp3",
+            'work-sound': storedSettings['work-sound'] || "attention-seeker.mp3"
         };
 
         localStorage.setItem("pomodoroSettings", JSON.stringify(settings));
@@ -88,10 +73,12 @@ export default class TimerController {
     }
 
     onSettingsChange(e) {
+        const getCleanId = (id) => id.replace('js-', '');
+
         const newOption = {};
-        const key = e.currentTarget.getAttribute('id');
+        const key = getCleanId(e.currentTarget.getAttribute('id'));
         let value = "";
-        if (key.indexOf("S") > 0) {
+        if (key.indexOf("sound") > 0) {
             value = this.soundNames[e.currentTarget.value];
         } else {
             value = e.currentTarget.value;
