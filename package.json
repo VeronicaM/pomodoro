@@ -56,10 +56,7 @@
     "webpack-hot-middleware": "^2.16.1",
     "jade-html-loader": "0.0.3",
     "pug": "^2.0.0-rc.3",
-    "pug-html-loader": "^1.1.5"
-  },
-  "devDependencies": {
-    "dotenv-webpack": "^1.8.0",
+    "pug-html-loader": "^1.1.5",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",

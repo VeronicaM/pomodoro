@@ -2,7 +2,6 @@ const path = require("path");
 const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const Dotenv = require("dotenv-webpack");
 
 module.exports = {
   context: path.resolve("public"),
@@ -16,7 +15,6 @@ module.exports = {
     contentBase: "public",
   },
   plugins: [
-    new Dotenv(),
     new ExtractTextPlugin("styles.css"),
     new webpack.ProvidePlugin({
       $: "jquery",
