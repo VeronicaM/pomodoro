@@ -1,0 +1,119 @@
+@import "./LinksSection/links.scss";
+
+.settings-widget {
+    font-size: 35px;
+    color: white;
+    text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    position: fixed;
+    top: 0px;
+    right: 10px;
+    text-align: right;
+    height: 60px;
+    cursor: pointer;
+    @extend .noselection;
+    cursor: pointer;
+
+    &__submenu {
+        height: 100%;
+    }
+
+    &__menu {
+        display: none;
+        position: relative;
+        font-size: 19px;
+        background-color: rgba(0, 0, 0, 0.85);
+        height: 192px;
+        width: 430px;
+        color: white;
+        text-align: center;
+        padding-top: 6px;
+        border-radius: 8px;
+        box-shadow: 0 0 24px #000 inset;
+        z-index: -1;
+    }
+
+    &__footer {
+        height: 25px;
+        background-color: white;
+        position: relative;
+        bottom: 0;
+        border-radius: 0 0 20px 20px;
+    }
+
+    &__headline {
+        background-color: black;
+        margin-top: -4px;
+        border-radius: 7px;
+        padding: 5px 0 5px 0;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: row;
+        margin-top: 23px;
+        font-size: 15px;
+        color: $settings-color;
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        height: 100%;
+        text-align: left;
+        margin: 0 30px 0 15px;
+        color: $settings-color;
+
+        div {
+            padding-bottom: 10px;
+
+            &:after {
+                content: "";
+                display: block;
+                height: 0.9px;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.35);
+            }
+
+            &:hover {
+                color: white;
+                cursor: pointer;
+            }
+        }
+    }
+
+    &__options {
+        margin-left: 20px;
+
+        & > div {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+
+            div {
+                display: flex;
+                justify-content: space-between;
+                flex-direction: row;
+                width: 100%;
+                padding-bottom: 10px;
+            }
+
+            select {
+                width: 52%;
+            }
+        }
+    }
+
+    &__section {
+        display: none !important;
+    }
+
+    &__section.selected {
+        display: flex !important;
+    }
+
+    .selected {
+        color: white;
+        font-weight: bold;
+    }
+}

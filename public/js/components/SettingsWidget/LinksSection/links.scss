@@ -1,0 +1,46 @@
+.settings-widget-links {
+    overflow-y: scroll;
+    position: relative;
+    top: -24px;
+    left: -32px;
+    padding: 7px;
+    height: 144px;
+    font-size: 16px;
+    width: 100%;
+
+    table {
+        color: white;
+        cursor: default;
+        text-align: left;
+
+        a {
+            padding-left: 10px;
+            color: rgb(188, 247, 255);
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    &__add {
+        display: flex;
+        flex-direction: column !important;
+        input {
+            font-size: 16px;
+            padding-left: 10px;
+        }
+    }
+
+    &__cta {
+        background-color: $success;
+        border-radius: 0 0 10px 10px;
+        color: $light;
+        font-size: 16px;
+    }
+
+    &__delete {
+        cursor: pointer;
+    }
+}

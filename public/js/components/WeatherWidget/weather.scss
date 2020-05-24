@@ -1,0 +1,55 @@
+.weather-widget {
+    position: absolute;
+    top: 30px;
+    min-height: 100px;
+    width: 200px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+
+    &__description {
+        display: flex;
+        align-items: center;
+    }
+
+    &__icon {
+        height: 50px;
+        width: 50px;
+    }
+
+    &__description {
+        display: flex;
+        flex-direction: column;
+        margin-left: 4%;
+
+        img {
+            width: 100px;
+            height: 100px;
+        }
+    }
+
+    &__temperature {
+        cursor: hand;
+        margin-left: 30%;
+        font-size: 35px;
+    }
+
+    &__location {
+        padding: 15px 0;
+        text-align: center;
+    }
+
+    &__trigger {
+        font-size: 22px;
+        position: absolute;
+        top: 0;
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, 0.62);
+        color: white;
+        padding: 2px;
+    }
+
+    &__close {
+        float: right;
+        padding: 10px 10px 0 0;
+    }
+}
