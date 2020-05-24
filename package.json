@@ -4,7 +4,7 @@
   "description": "\"# pomodoro\"",
   "main": "server.js",
   "scripts": {
-    "start": "npm run build && nodemon server.js",
+    "start": "npm run build && node server.js",
     "build:run:prod": "NODE_ENV=production npm run build && node server.js",
     "run:client": "webpack-dev-server -d --watch",
     "dev": "NODE_ENV=development nodemon server.js",
