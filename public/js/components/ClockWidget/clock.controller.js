@@ -25,10 +25,10 @@ export default class ClockController {
 
         this.config = {
             endMsg: `Hey, your pomodoro session of ${this.settings.countdown} minutes is over! Come take a break and cross out your finished tasks!`,
-            breakEndMsg: `Hey, your break of ${this.settings.break} minutes is over. Do you want to start a new pomodoro ?`,
+            breakEndMsg: `Hey, your break of ${this.settings['break-minutes']} minutes is over. Do you want to start a new pomodoro ?`,
             breakAudio: require(`file-loader!../../../audio/${this.settings['work-sound']}`), // eslint-disable-line global-require
             endAudio: require(`file-loader!../../../audio/${this.settings['break-sound']}`), // eslint-disable-line global-require
-            breakCTA: 'Take Break',
+            breakCTA: 'Break',
             breakMsg: 'Work hard! Focus! Time left in the session:',
             title: 'Pomodoro',
             breakOnMsg: 'Enjoy your break! You deserve it :)!',
@@ -36,12 +36,12 @@ export default class ClockController {
             startCTA: 'Start'
         };
 
-        const startSeconds = 59;
+        this.startSeconds = 59;
 
         this.state = {
             isBreak: false,
             minutes: this.settings.running ? this.settings.minutes : this.settings.countdown || 25,
-            seconds: this.settings.running ? this.settings.seconds : startSeconds,
+            seconds: this.settings.running ? this.settings.seconds : this.startSeconds,
             running: this.settings.running
         };
 
@@ -83,7 +83,11 @@ export default class ClockController {
     }
 
     updateTimeDisplay(minutes, seconds) {
-        const displaySeconds = seconds === 59 && this.state.minutes === this.settings.countdown && !this.state.running ? 0 : seconds;
+        const displaySeconds = seconds === this.startSeconds &&
+            (this.state.minutes === this.settings.countdown ||
+                this.state.miuntes === this.settings['break-minutes']) &&
+            !this.state.running ? 0 : seconds;
+
         this.updateDigitsDisplay(minutes, 'm');
         this.updateDigitsDisplay(displaySeconds, 's');
     }
@@ -134,14 +138,11 @@ export default class ClockController {
     }
 
     handleElapseSeconds() {
-        const updatedMinutes = this.state.minutes === this.settings.countdown && this.state.seconds === 59 ? this.state.minutes - 1 : this.state.minutes;
-
         this.updateCurrentTime({
-            seconds: this.state.seconds - 1,
-            minutes: updatedMinutes
+            seconds: this.state.seconds - 1
         });
 
-        this.updateTimeDisplay(updatedMinutes, this.state.seconds);
+        this.updateTimeDisplay(this.state.minutes, this.state.seconds);
 
         this.updateTitlePomodoro(this.state.minutes, this.state.seconds);
     };
@@ -149,10 +150,10 @@ export default class ClockController {
     handleElapseMinutes() {
         this.updateCurrentTime({
             minutes: this.state.minutes - 1,
-            seconds: startSeconds
+            seconds: this.startSeconds
         });
 
-        this.updateTimeDisplay(this.state.minutes, startSeconds);
+        this.updateTimeDisplay(this.state.minutes, this.startSeconds);
 
         this.updateTitlePomodoro(this.state.minutes, this.state.seconds);
     };
@@ -164,7 +165,10 @@ export default class ClockController {
         updateText(this.cta, this.config.startCTA);
 
         this.updateCurrentTime({
-            isBreak: false
+            isBreak: false,
+            running: false,
+            minutes: this.settings.countdown,
+            seconds: this.startSeconds
         });
     };
 
@@ -176,7 +180,7 @@ export default class ClockController {
 
             this.updateCurrentTime({
                 seconds: this.state.break - 1,
-                minutes: updatedMinutes
+                minutes: this.settings['break-minutes']
             });
 
         } else {
@@ -190,7 +194,7 @@ export default class ClockController {
 
         TimerController.updateSettings({
             minutes: this.settings.countdown,
-            seconds: startSeconds
+            seconds: this.startSeconds
         });
 
         this.updateTimeDisplay(this.settings.countdown, 0);
@@ -212,7 +216,8 @@ export default class ClockController {
         this.updateCurrentTime({
             isBreak: true,
             running: true,
-            minutes: parseInt(this.settings['break-minutes']) - 1
+            minutes: this.settings['break-minutes'] - 1,
+            seconds: this.startSeconds
         });
 
         this.elapseTime();
@@ -224,7 +229,8 @@ export default class ClockController {
 
         this.updateCurrentTime({
             running: true,
-            minutes: this.state.minutes - 1
+            minutes: this.state.minutes - 1,
+            seconds: this.startSeconds
         });
 
         this.elapseTime();
@@ -239,7 +245,9 @@ export default class ClockController {
 
         this.updateCurrentTime({
             running: false,
-            isBreak: false
+            isBreak: false,
+            seconds: this.startSeconds,
+            minutes: this.settings.countdown
         });
     }
 
