@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Lint js files') {
             steps {
-                withNPM(){
+                withNPM(npmrcConfig:'artifactory-npmrc'){
                     sh 'npm run lint'
                 }
             }
