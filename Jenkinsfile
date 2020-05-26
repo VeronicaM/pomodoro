@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Install dependencies') {
             steps {
-                sh 'npm install  --unsafe-perm'
+                sh 'npm install'
             }
         }
         stage('Lint js files') {
