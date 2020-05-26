@@ -4,7 +4,10 @@ pipeline {
     stages {
         stage('Lint js files') {
             steps {
-                sh 'npm run lint'
+                sh '''
+                npm install
+                npm run lint
+                '''
             }
         }
     }
