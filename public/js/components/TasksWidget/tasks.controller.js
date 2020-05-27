@@ -1,15 +1,20 @@
 import Task from './Task';
 
+const getTasks = () => {
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  return tasks;
+};
+
 export default class TasksController {
   constructor() {
     // elements
-    this.widget = $(".tasks-widget");
-    this.widgetToggle = $(".tasks-widget__trigger");
-    this.container = $(".tasks-widget__tasks");
-    this.deleteIconSelector = "tasks-widget__delete";
-    this.checkboxSelector = "tasks-widget__checkbox";
-    this.completeTaskClassName = "strike-text";
-    this.taskInput = $("#taskName");
+    this.widget = $('.tasks-widget');
+    this.widgetToggle = $('.tasks-widget__trigger');
+    this.container = $('.tasks-widget__tasks');
+    this.deleteIconSelector = 'tasks-widget__delete';
+    this.checkboxSelector = 'tasks-widget__checkbox';
+    this.completeTaskClassName = 'strike-text';
+    this.taskInput = $('#taskName');
 
     // properties
     this.tasks = [];
@@ -17,55 +22,50 @@ export default class TasksController {
     this.initView();
 
     // add event listeners
-    this.widgetToggle.on("click", this.onContainerToggle.bind(this));
+    this.widgetToggle.on('click', this.onContainerToggle.bind(this));
     this.taskInput.keypress(this.onTypeTask.bind(this));
   }
 
   initView() {
-    this.tasks = this.getTasks();
+    this.tasks = getTasks();
     this.print();
   }
 
   saveTask(task) {
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     tasks.push(task);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    localStorage.setItem('tasks', JSON.stringify(tasks));
     this.tasks = tasks;
   }
 
   removeTask(task) {
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     const filteredTasks = tasks.filter((t) => t.description !== task.description);
-    localStorage.setItem("tasks", JSON.stringify(filteredTasks));
+    localStorage.setItem('tasks', JSON.stringify(filteredTasks));
     this.tasks = tasks;
   }
 
   completeTask(task) {
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     const index = tasks.findIndex(
-      (taskItem) => taskItem.description === task.description
+      (taskItem) => taskItem.description === task.description,
     );
 
     tasks[index] = task;
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    localStorage.setItem('tasks', JSON.stringify(tasks));
     this.tasks = tasks;
-  }
-
-  getTasks() {
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    return tasks;
   }
 
   generateTaskTemplate(task) {
     const appendDelete = `<span class='${this.deleteIconSelector}' data-taskValue='${JSON.stringify(
-      task
+      task,
     )}'> x </span>`;
-    const className = task.completeTask ? this.completeTaskClassName : "";
+    const className = task.completeTask ? this.completeTaskClassName : '';
     const content = `<label class='${className}'><input taskValue='${JSON.stringify(
-      task
+      task,
     )}' class='${this.checkboxSelector}' type ='checkbox' value ='${task.description}'> ${
       task.description
-      }${appendDelete}</label>`;
+    }${appendDelete}</label>`;
 
     return content;
   }
@@ -77,30 +77,30 @@ export default class TasksController {
   }
 
   addEventListners() {
-    $(`.${this.deleteIconSelector}`).on("click", this.onDeleteTask.bind(this));
+    $(`.${this.deleteIconSelector}`).on('click', this.onDeleteTask.bind(this));
     $(`.${this.checkboxSelector}`).change(this.onToggleTaskComplete.bind(this));
   }
 
   generateTasksTemplate() {
-    let content = "";
-    let appendDelete = "";
-    let className = "";
-    let checked = "";
+    let content = '';
+    let appendDelete = '';
+    let className = '';
+    let checked = '';
     for (let i = 0; i < this.tasks.length; i += 1) {
       appendDelete = `<span class='${this.deleteIconSelector}' data-taskValue='${JSON.stringify(
-        this.tasks[i]
+        this.tasks[i],
       )}'> x </span>`;
       if (this.tasks[i].completed) {
         className = this.completeTaskClassName;
-        checked = "checked";
+        checked = 'checked';
       }
       content += `<label class='${className}'><input taskValue='${JSON.stringify(
-        this.tasks[i]
+        this.tasks[i],
       )}' class='${this.checkboxSelector}' type ='checkbox' ${checked} value ='${
         this.tasks[i].description
-        }'> ${this.tasks[i].description}${appendDelete}</label>`;
-      className = "";
-      checked = "";
+      }'> ${this.tasks[i].description}${appendDelete}</label>`;
+      className = '';
+      checked = '';
     }
 
     return content;
@@ -115,7 +115,7 @@ export default class TasksController {
   }
 
   onDeleteTask(e) {
-    const attributeContent = e.currentTarget.getAttribute("data-taskValue");
+    const attributeContent = e.currentTarget.getAttribute('data-taskValue');
     const object = JSON.parse(attributeContent);
 
     this.removeTask(object);
@@ -124,14 +124,14 @@ export default class TasksController {
   }
 
   onToggleTaskComplete(e) {
-    const attributeContent = e.currentTarget.getAttribute("taskValue");
+    const attributeContent = e.currentTarget.getAttribute('taskValue');
     const object = JSON.parse(attributeContent);
 
     if (e.currentTarget.checked) {
       e.currentTarget.parentElement.className = this.completeTaskClassName;
       object.completed = true;
     } else {
-      e.currentTarget.parentElement.className = "";
+      e.currentTarget.parentElement.className = '';
       object.completed = false;
     }
 
@@ -157,7 +157,7 @@ export default class TasksController {
       this.printTask(newTask);
 
       // reset current value
-      e.currentTarget.value = "";
+      e.currentTarget.value = '';
     }
   }
 }
