@@ -4,10 +4,7 @@ pipeline {
     stages {
         stage('Install dependencies') {
             steps {
-                sh '''
-                    npm install --unsafe-perm node-sass@4.12.0 -g
-                    npm install  
-                '''
+                sh 'npm install  --unsafe-perm'
             }
         }
         stage('Lint js files') {
