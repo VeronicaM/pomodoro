@@ -5,7 +5,7 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 sh '''
-                    sudo npm install --unsafe-perm node-sass@4.12.0 -g
+                    npm install --unsafe-perm node-sass@4.12.0 -g
                     npm install  
                 '''
             }
