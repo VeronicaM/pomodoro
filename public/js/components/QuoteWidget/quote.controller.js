@@ -8,7 +8,6 @@ const getQuote = () => {
   return new Promise((resolve) => {
     $.post(URL).done((quote) => {
       const result = JSON.parse(quote);
-      console.log(result);
       resolve({
         author: result.quoteAuthor || 'Unknown',
         text: result.quoteText,
