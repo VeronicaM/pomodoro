@@ -2,7 +2,7 @@ REPO_REVISION=$(git rev-parse HEAD)
 TIMESTAMP=$(date +"%Y%m%d-%H%M%S")
 ECR_REVISION_TAG="$TIMESTAMP-$REPO_REVISION"
 
-aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 175453773225.dkr.ecr.eu-west-2.amazonaws.com
+# aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 175453773225.dkr.ecr.eu-west-2.amazonaws.com
 
 docker build -t pomodoro .
 docker tag pomodoro:latest 175453773225.dkr.ecr.eu-west-2.amazonaws.com/pomodoro:latest
