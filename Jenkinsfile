@@ -12,10 +12,15 @@ pipeline {
                 sh 'npm run lint'
             }
         }
-        stage('Make Docker Image and upload to ECR') {
+        stage('Docker build') {
+            steps {
+               docker.build('pomodoro')
+            }
+        }
+        stage('Upload docker image to ECR') {
           steps {
-                withAWS(region:'eu-west-2',credentials:'aws-static') {
-                   sh './make-runner.sh'
+                docker.withRegistry('175453773225.dkr.ecr.eu-west-2.amazonaws.com', 'ecr:us-west-2:aws-static') {
+                    docker.image('pomodoro').push('latest')
                 }
            }
         }
