@@ -16,12 +16,7 @@ pipeline {
           steps {
               script {
                 docker.withRegistry('https://175453773225.dkr.ecr.eu-west-2.amazonaws.com', 'ecr:us-west-2:aws-static') {
-                      sh '''
-                        docker build -t pomodoro .
-                        docker tag pomodoro:latest 175453773225.dkr.ecr.eu-west-2.amazonaws.com/pomodoro:latest
-                        printf "\n\nPushing Docker image to ECR..."
-                        docker push 175453773225.dkr.ecr.eu-west-2.amazonaws.com/pomodoro:latest
-                    '''
+                    docker.image(pomodoro).push('latest')
                 }
               }
            }
