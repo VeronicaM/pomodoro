@@ -15,7 +15,7 @@ pipeline {
         stage('Build and push docker image to ECR') {
           steps {
               script {
-                docker.withRegistry('https://175453773225.dkr.ecr.eu-west-2.amazonaws.com', 'ecr:us-west-2:aws-static') {
+                  withDockerRegistry(credentialsId: 'aws-static', url: 'https://175453773225.dkr.ecr.eu-west-2.amazonaws.com') {
                     docker.image(pomodoro).push('latest')
                 }
               }
