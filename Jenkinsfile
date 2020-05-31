@@ -16,7 +16,7 @@ pipeline {
           steps {
               script {
                   withDockerRegistry(url: 'https://175453773225.dkr.ecr.eu-west-2.amazonaws.com') {
-                    docker.image(pomodoro).push('latest')
+                    docker.image("pomodoro").push('latest')
                 }
               }
            }
