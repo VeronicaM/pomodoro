@@ -7,8 +7,8 @@ pipeline {
               script {
                   withDockerRegistry(url: 'https://175453773225.dkr.ecr.eu-west-2.amazonaws.com') {
                     sh '''
-                        sudo docker build -t pomodoro .
-                        sudo docker push 175453773225.dkr.ecr.eu-west-2.amazonaws.com/pomodoro:latest
+                        docker build -t pomodoro .
+                        docker push 175453773225.dkr.ecr.eu-west-2.amazonaws.com/pomodoro:latest
                     '''
                 }
               }
