@@ -1,7 +1,8 @@
 # stage1 as builder
 FROM node:10-alpine as builder
 
-USER ubuntu
+USER root
+WORKDIR /home/pomodoro
 
 # copy the package.json to install dependencies
 COPY package.json package-lock.json ./
@@ -9,7 +10,6 @@ COPY package.json package-lock.json ./
 # Install the dependencies and make the folder
 RUN  npm install && mkdir /pomodoro && mv ./node_modules ./pomodoro
 
-WORKDIR /pomodoro
 
 COPY . .
 
