@@ -2,16 +2,6 @@ pipeline {
     agent any 
     tools {nodejs "node"}
     stages {
-        stage('Install dependencies') {
-            steps {
-                sh 'npm install  --unsafe-perm'
-            }
-        }
-        stage('Lint js files') {
-            steps {
-                sh 'npm run lint'
-            }
-        }
         stage('Build and push docker image to ECR') {
           steps {
               script {
