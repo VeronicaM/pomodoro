@@ -1,6 +1,7 @@
 # stage1 as builder
 FROM node:10-alpine as builder
-RUN apk add nodejs
+RUN apk update --no-cache && apk upgrade --no-cache
+RUN apk add --update nodejs npm
 
 USER root
 WORKDIR /home/pomodoro
