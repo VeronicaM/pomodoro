@@ -1,7 +1,7 @@
 # stage1 as builder
 FROM node:10-alpine as builder
 
-USER root
+USER ubuntu
 
 # copy the package.json to install dependencies
 COPY package.json package-lock.json ./
