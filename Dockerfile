@@ -8,7 +8,7 @@ WORKDIR /home/pomodoro
 COPY package.json package-lock.json ./
 
 # Install the dependencies and make the folder
-RUN  npm install && mkdir /pomodoro && mv ./node_modules ./pomodoro
+RUN npm install
 
 
 COPY . .
