@@ -1,5 +1,6 @@
 # stage1 as builder
 FROM node:10-alpine as builder
+RUN apk add nodejs
 
 USER root
 WORKDIR /home/pomodoro
