@@ -4,9 +4,7 @@ FROM node:10-alpine as builder
 USER root
 
 # change npm's default directory
-RUN mkdir ~/.npm-global
-RUN npm config set prefix '~/.npm-global'
-RUN echo 'export PATH=~/.npm-global/bin:$PATH' > ~/.profile
+RUN NPM_CONFIG_PREFIX=~/.npm-global
 RUN source ~/.profile
 
 # RUN ls -la /usr/local/lib/node_modules
