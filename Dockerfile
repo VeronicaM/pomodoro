@@ -3,9 +3,14 @@ FROM node:10-alpine as builder
 
 USER root
 
-RUN ls -la /usr/local/lib/node_modules
-RUN sudo chown -R $USER /usr/local/lib/node_modules
+# change npm's default directory
+RUN mkdir ~/.npm-global
+RUN npm config set prefix '~/.npm-global'
+RUN echo 'export PATH=~/.npm-global/bin:$PATH' > ~/.profile
+RUN source ~/.profile
 
+# RUN ls -la /usr/local/lib/node_modules
+# RUN sudo chown -R $USER /usr/local/lib/node_modules
 # copy the package.json to install dependencies
 COPY package.json package-lock.json ./
 
