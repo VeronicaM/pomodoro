@@ -3,7 +3,6 @@ FROM node:10-alpine as builder
 
 USER root
 
-RUN npm config set unsafe-perm=true
 RUN ls -la /usr/local/lib/node_modules
 RUN sudo chown -R $USER /usr/local/lib/node_modules
 
