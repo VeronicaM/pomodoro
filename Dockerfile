@@ -3,7 +3,7 @@ FROM node:10-alpine as builder
 
 USER root
 
-RUN ls -lah /home/node
+RUN npm config set unsafe-perm=true
 
 # copy the package.json to install dependencies
 COPY package.json package-lock.json ./
