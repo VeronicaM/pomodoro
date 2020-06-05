@@ -4,33 +4,39 @@ FROM node:10-alpine as builder
 USER root
 
 # change npm's default directory
+WORKDIR /pomodoro
+
 RUN NPM_CONFIG_PREFIX=~/.npm-global
-RUN cd /usr/local/lib
-RUN mkdir node_modules
-RUN ls -la node_modules
+RUN npm -v
+RUN node -v
 
 # copy the package.json to install dependencies
 COPY package.json package-lock.json ./
 
 # Install the dependencies and make the folder
-RUN  npm install && mkdir /pomodoro && mv ./node_modules ./pomodoro
+RUN  npm install
 
-WORKDIR /pomodoro
-
-COPY . .
 
 # Build the project and copy the files
 RUN npm rebuild node-sass
+
+COPY . .
+
+RUN ls
+
 RUN npm run build
 
+RUN ls
 
 FROM nginx:alpine
 
 ## Remove default nginx index page
 RUN rm -rf /usr/share/nginx/html/*
 
+RUN ls
+
 # Copy from the stahg 1
-COPY --from=builder /pomodoro/build /usr/share/nginx/html
+COPY --from=builder ./build /usr/share/nginx/html
 
 EXPOSE 80 80
 
