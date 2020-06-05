@@ -1,7 +1,7 @@
 # stage1 as builder
 FROM node:10-alpine as builder
 
-USER root
+USER $USER
 
 # change npm's default directory
 WORKDIR /pomodoro
