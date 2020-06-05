@@ -1,7 +1,7 @@
 # stage1 as builder
 FROM node:10-alpine as builder
 
-USER $USER
+USER ubuntu
 
 RUN whoami
 # change npm's default directory
