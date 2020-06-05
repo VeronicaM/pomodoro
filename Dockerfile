@@ -3,6 +3,7 @@ FROM node:10-alpine as builder
 
 USER $USER
 
+RUN whoami
 # change npm's default directory
 WORKDIR /pomodoro
 
