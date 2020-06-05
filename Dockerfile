@@ -5,9 +5,10 @@ USER root
 
 # change npm's default directory
 RUN NPM_CONFIG_PREFIX=~/.npm-global
+RUN cd /usr/local/lib
+RUN mkdir node_modules
+RUN ls -la node_modules
 
-RUN ls -la /usr/local/lib/node_modules
-RUN chown -R $USER /usr/local/lib/node_modules
 # copy the package.json to install dependencies
 COPY package.json package-lock.json ./
 
