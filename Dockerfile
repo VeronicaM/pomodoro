@@ -4,8 +4,7 @@ FROM node:10-alpine as builder
 RUN whoami
 # change npm's default directory
 WORKDIR /pomodoro
-
-RUN NPM_CONFIG_PREFIX=~/.npm-global
+RUN  ls -la /usr/local/lib/node_modules/npm/bin
 RUN npm -v
 RUN node -v
 

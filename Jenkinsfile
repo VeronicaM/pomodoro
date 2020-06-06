@@ -5,12 +5,14 @@ pipeline {
         stage('Build and push docker image to ECR') {
           steps {
               script {
-                  withDockerRegistry(url: 'https://175453773225.dkr.ecr.eu-west-2.amazonaws.com') {
-                    sh '''
-                        docker build -t pomodoro .
-                        docker push 175453773225.dkr.ecr.eu-west-2.amazonaws.com/pomodoro:latest
-                    '''
-                }
+                  withNPM(){
+                      withDockerRegistry(url: 'https://175453773225.dkr.ecr.eu-west-2.amazonaws.com') {
+                        sh '''
+                            docker build -t pomodoro .
+                            docker push 175453773225.dkr.ecr.eu-west-2.amazonaws.com/pomodoro:latest
+                        '''
+                    }
+                  }
               }
            }
         }
