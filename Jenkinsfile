@@ -1,4 +1,9 @@
 pipeline {
+    agent any 
+    tools {nodejs "node"}
+    environment {
+        CI = 'true' 
+    }
     stages {
         stage('install dependencies') {
             steps {
