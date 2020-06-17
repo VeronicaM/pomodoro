@@ -17,7 +17,7 @@ pipeline {
         }
         stage('Build docker image') {
             steps {
-                sh "docker build --build-arg APP_NAME=pomodoro -t 5https://175453773225.dkr.ecr.eu-west-2.amazonaws.com/pomodoro:latest -f Dockerfile ."
+                sh "docker build --build-arg APP_NAME=pomodoro -t https://175453773225.dkr.ecr.eu-west-2.amazonaws.com/pomodoro:latest -f Dockerfile ."
             }
         }
         stage('Build and push docker image to ECR') {
