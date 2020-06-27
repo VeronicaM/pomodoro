@@ -10,20 +10,14 @@ pipeline {
                 sh "npm install"
             }
         }
-        stage('Build project') {
-            steps {
-                sh '''
-                    pwd
-                    ls
-                    npm build
-                '''
-            }
-        }
         stage('Build and push docker image to ECR') {
           steps {
               script {
                     withDockerRegistry(url: 'https://175453773225.dkr.ecr.eu-west-2.amazonaws.com') {
                         sh '''
+                            npm run build
+                            pwd
+                            ls
                             docker build -t pomodoro .
                             docker tag pomodoro:latest 175453773225.dkr.ecr.eu-west-2.amazonaws.com/pomodoro:latest
                             docker push 175453773225.dkr.ecr.eu-west-2.amazonaws.com/pomodoro:latest
