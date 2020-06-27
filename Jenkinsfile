@@ -12,7 +12,11 @@ pipeline {
         }
         stage('Build project') {
             steps {
-                sh "npm build"
+                sh '''
+                    pwd
+                    ls
+                    npm build
+                '''
             }
         }
         stage('Build and push docker image to ECR') {
