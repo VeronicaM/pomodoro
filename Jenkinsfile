@@ -25,6 +25,7 @@ pipeline {
               script {
                     withDockerRegistry(url: 'https://175453773225.dkr.ecr.eu-west-2.amazonaws.com') {
                         sh '''
+                            aws ecr get-login --no-include-email --region eu-west-2
                             docker build -t pomodoro .
                             docker tag pomodoro:latest 175453773225.dkr.ecr.eu-west-2.amazonaws.com/pomodoro:latest
                             docker push 175453773225.dkr.ecr.eu-west-2.amazonaws.com/pomodoro:latest
