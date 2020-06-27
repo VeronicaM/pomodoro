@@ -10,14 +10,22 @@ pipeline {
                 sh "npm install"
             }
         }
+        stage('Lint project') {
+            steps {
+                sh "npm run lint"
+            }
+        }
+        stage('Build project') {
+            steps {
+                sh "npm run build"
+            }
+        }
         stage('Build and push docker image to ECR') {
           steps {
               script {
                     withDockerRegistry(url: 'https://175453773225.dkr.ecr.eu-west-2.amazonaws.com') {
                         sh '''
-                            npm run build
-                            pwd
-                            ls
+                            aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 175453773225.dkr.ecr.eu-west-2.amazonaws.com
                             docker build -t pomodoro .
                             docker tag pomodoro:latest 175453773225.dkr.ecr.eu-west-2.amazonaws.com/pomodoro:latest
                             docker push 175453773225.dkr.ecr.eu-west-2.amazonaws.com/pomodoro:latest
