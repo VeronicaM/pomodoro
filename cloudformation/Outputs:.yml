@@ -1,0 +1,5 @@
+Outputs:
+  BackupLoadBalancerDNSName:
+    Description: The DNSName of the backup load balancer
+    Value: !GetAtt BackupLoadBalancer.DNSName
+    Condition: CreateProdResources
