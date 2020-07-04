@@ -3,6 +3,7 @@ import MainController from './main.controller';
 
 require('../css/app.scss');
 
+test = 'this should not be here';
 function injectFavIcon() {
   const favIco = require('../favicon.png'); // eslint-disable-line global-require
   const link = $('<link></link>');
