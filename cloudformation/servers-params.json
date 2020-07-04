@@ -1,0 +1,14 @@
+[
+    {
+        "ParameterKey": "EnvironmentName",
+        "ParameterValue": "IacCProject"
+    },
+    {
+        "ParameterKey": "ImageId",
+        "ParameterValue": "ami-0d1cd67c26f5fca19"
+    },
+    {
+        "ParameterKey": "InstanceType",
+        "ParameterValue": "t3.medium"
+    }
+]
